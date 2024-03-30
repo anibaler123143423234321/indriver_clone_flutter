@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:indriver_clone_flutter/src/domain/models/AuthResponse.dart';
 import 'package:indriver_clone_flutter/src/domain/utils/Resource.dart';
 import 'package:indriver_clone_flutter/src/presentation/pages/auth/login/LoginContent.dart';
 import 'package:indriver_clone_flutter/src/presentation/pages/auth/login/bloc/LoginBloc.dart';
+import 'package:indriver_clone_flutter/src/presentation/pages/auth/login/bloc/LoginEvent.dart';
 import 'package:indriver_clone_flutter/src/presentation/pages/auth/login/bloc/LoginState.dart';
 
 class LoginPage extends StatefulWidget {
@@ -28,6 +30,9 @@ class _LoginPageState extends State<LoginPage> {
         else if(response is Success){
           Fluttertoast.showToast(msg: '${response.data}', toastLength: Toast.LENGTH_SHORT);
           print('Data: ${response.data}');
+          final authResponse = response.data as AuthResponse;
+          context.read<LoginBloc>().add(SaveUserSession(authResponse: response.data));
+          Navigator.pushNamedAndRemoveUntil(context, 'client/home', (route) => false);
         }
       },
       child: BlocBuilder<LoginBloc, LoginState>(

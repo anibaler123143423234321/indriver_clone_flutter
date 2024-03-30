@@ -7,6 +7,7 @@ import 'package:indriver_clone_flutter/src/presentation/pages/auth/login/LoginPa
 import 'package:indriver_clone_flutter/src/presentation/pages/auth/login/bloc/LoginBloc.dart';
 import 'package:indriver_clone_flutter/src/presentation/pages/auth/login/bloc/LoginEvent.dart';
 import 'package:indriver_clone_flutter/src/presentation/pages/auth/register/RegisterPage.dart';
+import 'package:indriver_clone_flutter/src/presentation/pages/client/home/ClientHomePage.dart';
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
@@ -34,6 +35,8 @@ class MyApp extends StatelessWidget {
         routes: {
           'login': (BuildContext context) => LoginPage(),
           'Register': (BuildContext context) => RegisterPage(),
+          'client/home': (BuildContext context) => ClientHomePage(),
+
         },
       ),
     );

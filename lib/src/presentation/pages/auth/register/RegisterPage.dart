@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:indriver_clone_flutter/src/domain/models/AuthResponse.dart';
 import 'package:indriver_clone_flutter/src/domain/utils/Resource.dart';
 import 'package:indriver_clone_flutter/src/presentation/pages/auth/register/RegisterContent.dart';
 import 'package:indriver_clone_flutter/src/presentation/pages/auth/register/bloc/RegisterBloc.dart';
@@ -25,7 +26,10 @@ class _RegisterPageState extends State<RegisterPage> {
             Fluttertoast.showToast(msg: response.message, toastLength: Toast.LENGTH_LONG);
           }
           else if(response  is Success){
+            final authResponse = response.data as AuthResponse;
             context.read<RegisterBloc>().add(FormReset());
+            context.read<RegisterBloc>().add(SaveUserSession(authResponse: response.data));
+            Navigator.pushNamedAndRemoveUntil(context, 'client/home', (route) => false);
           }
         },
         child: BlocBuilder<RegisterBloc, RegisterState>(

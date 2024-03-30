@@ -41,7 +41,8 @@ dependencies:
   injectable: ^2.3.2
   get_it: ^7.6.7
   fluttertoast: ^8.2.4
-  
+  shared_preferences: ^2.2.2
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
