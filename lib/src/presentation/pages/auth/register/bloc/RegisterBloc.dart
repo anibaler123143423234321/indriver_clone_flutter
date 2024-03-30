@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:indriver_clone_flutter/src/domain/useCases/auth/AuthUseCase.dart';
+import 'package:indriver_clone_flutter/src/domain/utils/Resource.dart';
 import 'package:indriver_clone_flutter/src/presentation/pages/auth/register/bloc/RegisterEvent.dart';
 import 'package:indriver_clone_flutter/src/presentation/pages/auth/register/bloc/RegisterState.dart';
 import 'package:indriver_clone_flutter/src/presentation/utils/BlocFormItem.dart';
 
 class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
+
+  AuthUseCases authUseCases;
   final formKey = GlobalKey<FormState>();
 
-  RegisterBloc() : super(RegisterState()) {
+  RegisterBloc(this.authUseCases) : super(RegisterState()) {
     on<RegisterInitEvent>((event, emit) {
       emit(state.copyWith(formKey: formKey));
     });
@@ -78,6 +82,19 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
       print('phone: ${state.phone.value}');
       print('password: ${state.password.value}');
       print('confirmPassword: ${state.confirmPassword.value}');
+      emit(
+        state.copyWith(
+          response: Loading(),
+          formKey: formKey
+        )
+        );
+        Resource response = await authUseCases.register.run(state.toUser());
+      emit(
+        state.copyWith(
+          response: response,
+          formKey: formKey
+        )
+      );
     });
 
     on<FormReset>((event, emit) {
