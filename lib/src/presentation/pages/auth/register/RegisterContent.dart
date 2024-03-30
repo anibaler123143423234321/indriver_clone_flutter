@@ -190,7 +190,7 @@ class RegisterContent extends StatelessWidget {
         SizedBox(width: 5),
         GestureDetector(
           onTap: (){
-            Navigator.pushNamed(context, 'login');
+          Navigator.pushReplacementNamed(context, 'login'); // Reemplazar en lugar de agregar
           },
           child: Text(
             'Inicia Sesión',
@@ -248,7 +248,7 @@ class RegisterContent extends StatelessWidget {
   Widget _textLoginRotated(BuildContext context){
     return GestureDetector(
       onTap: (){
-        Navigator.pushNamed(context, 'login');
+          Navigator.pushReplacementNamed(context, 'login'); // Reemplazar en lugar de agregar
       },
       child: RotatedBox(
         quarterTurns: 1,
