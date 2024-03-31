@@ -36,7 +36,7 @@ class User {
         image: json["image"],
         password: json['password'],
         notificationToken: json["notification_token"],
-        roles: List<Role>.from(json["roles"].map((x) => Role.fromJson(x))),
+        roles: json["roles"] != null ? List<Role>.from(json["roles"].map((x) => Role.fromJson(x))) : [],
     );
 
     Map<String, dynamic> toJson() => {

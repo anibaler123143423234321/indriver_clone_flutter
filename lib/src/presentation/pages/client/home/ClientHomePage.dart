@@ -4,7 +4,8 @@ import 'package:indriver_clone_flutter/main.dart';
 import 'package:indriver_clone_flutter/src/presentation/pages/client/home/bloc/ClientHomeBloc.dart';
 import 'package:indriver_clone_flutter/src/presentation/pages/client/home/bloc/ClientHomeEvent.dart';
 import 'package:indriver_clone_flutter/src/presentation/pages/client/home/bloc/ClientHomeState.dart';
-import 'package:indriver_clone_flutter/src/presentation/profile/info/ProfileInfoPage.dart';
+import 'package:indriver_clone_flutter/src/presentation/pages/client/mapSeeker/ClientMapSeekerPage.dart';
+import 'package:indriver_clone_flutter/src/presentation/pages/profile/info/ProfileInfoPage.dart';
 
 class ClientHomePage extends StatefulWidget {
   const ClientHomePage({super.key});
@@ -14,7 +15,7 @@ class ClientHomePage extends StatefulWidget {
 }
 
 class _nameState extends State<ClientHomePage> {
-  List<Widget> pageList = <Widget>[ProfileInfoPage()];
+  List<Widget> pageList = <Widget>[ClientMapSeekerPage(), ProfileInfoPage()];
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +49,7 @@ class _nameState extends State<ClientHomePage> {
                       style: TextStyle(color: Colors.white),
                     )),
                 ListTile(
-                  title: Text('Perfil de Usuario'),
+                  title: Text('Mapa de Busqueda'),
                   selected: state.pageIndex == 0,
                   onTap: () {
                     context
@@ -57,17 +58,24 @@ class _nameState extends State<ClientHomePage> {
                     Navigator.pop(context);
                   },
                 ),
-                  ListTile(
-                  title: Text('Cerrar Sesión'),
+                ListTile(
+                  title: Text('Perfil de Usuario'),
+                  selected: state.pageIndex == 1,
                   onTap: () {
                     context
                         .read<ClientHomeBloc>()
-                        .add(Logout());
+                        .add(ChangeDrawerPage(pageIndex: 1));
+                    Navigator.pop(context);
+                  },
+                ),
+                ListTile(
+                  title: Text('Cerrar Sesión'),
+                  onTap: () {
+                    context.read<ClientHomeBloc>().add(Logout());
                     Navigator.pushAndRemoveUntil(
-                      context,
-                       MaterialPageRoute(builder: (context) => MyApp() ), 
-                       (route) => false
-                      );
+                        context,
+                        MaterialPageRoute(builder: (context) => MyApp()),
+                        (route) => false);
                   },
                 )
               ],
