@@ -8,14 +8,16 @@ import 'package:indriver_clone_flutter/src/domain/useCases/geolocator/Geolocator
 import 'package:indriver_clone_flutter/src/domain/useCases/socket/SocketUseCases.dart';
 import 'package:indriver_clone_flutter/src/presentation/pages/driver/mapLocation/bloc/DriverMapLocationEvent.dart';
 import 'package:indriver_clone_flutter/src/presentation/pages/driver/mapLocation/bloc/DriverMapLocationState.dart';
+import 'package:socket_io_client/socket_io_client.dart';
 
 class DriverMapLocationBloc
     extends Bloc<DriverMapLocationEvent, DriverMapLocationState> {
   SocketUseCases socketUseCases;
   GeolocatorUseCases geolocatorUseCases;
+  AuthUseCases authUseCases;
   StreamSubscription? positionSubscription;
 
-  DriverMapLocationBloc(this.geolocatorUseCases, this.socketUseCases)
+  DriverMapLocationBloc(this.geolocatorUseCases, this.socketUseCases, this.authUseCases)
       : super(DriverMapLocationState()) {
       
     on<DriverMapLocationInitEvent>((event, emit) async {
@@ -86,6 +88,7 @@ class DriverMapLocationBloc
           position: event.position
         )
       );
+      add(EmitDriverPositionSocketIo());
     });
 
     on<StopLocation>((event, emit) {
@@ -93,11 +96,30 @@ class DriverMapLocationBloc
     });
 
     on<ConnectSocketIo>((event, emit) {
-      socketUseCases.connect.run();
+      Socket socket =  socketUseCases.connect.run();
+      emit(
+        state.copyWith(
+          socket: socket
+        )
+      );
     });
 
     on<DisconnectSocketIo>((event, emit) {
-      socketUseCases.disconnect.run();
+      Socket socket =  socketUseCases.disconnect.run();
+      emit(
+        state.copyWith(
+          socket: socket
+        )
+      );    
+      });
+
+    on<EmitDriverPositionSocketIo>((event, emit) async {
+      AuthResponse authResponse = await authUseCases.getUserSession.run();
+      state.socket?.emit('change_driver_position', {
+        'id': authResponse.user.id,
+        'lat': state.position!.latitude,
+        'lng': state.position!.longitude
+      });
     });
 
 

@@ -55,11 +55,12 @@ class ClientMapSeekerState extends Equatable {
       destinationLatLng: destinationLatLng ?? this.destinationLatLng,
       pickUpDescription: pickUpDescription ?? this.pickUpDescription,
       destinationDescription: destinationDescription ?? this.destinationDescription,
+      socket: socket ?? this.socket
     );
   }
 
 
   @override
-  List<Object?> get props => [position, markers, controller, cameraPosition, placemarkData, pickUpLatLng, destinationLatLng, pickUpDescription, destinationDescription];
+  List<Object?> get props => [position, markers, controller, cameraPosition, placemarkData, pickUpLatLng, destinationLatLng, pickUpDescription, destinationDescription, socket];
 
 }
