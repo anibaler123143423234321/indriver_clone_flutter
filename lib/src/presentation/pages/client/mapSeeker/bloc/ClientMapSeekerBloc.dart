@@ -112,6 +112,8 @@ class ClientMapSeekerBloc
       });
     });
 
+    
+
 
     on<AddDriverPositionMarker>((event, emit) async {
       BitmapDescriptor descriptor = await geolocatorUseCases.createMarker.run('assets/img/car_pin.png');
@@ -125,9 +127,7 @@ class ClientMapSeekerBloc
       );
       emit(
         state.copyWith(
-          markers: {
-            marker.markerId: marker
-          },
+          markers: Map.of(state.markers)..[marker.markerId] = marker
         )
       );
     });

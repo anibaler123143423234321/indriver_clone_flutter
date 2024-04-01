@@ -42,7 +42,7 @@ class ClientMapSeekerState extends Equatable {
     String? pickUpDescription,
     String? destinationDescription,
     Map<MarkerId, Marker>? markers,
-      Socket? socket
+    Socket? socket
   }) {
     
     return ClientMapSeekerState(
