@@ -5,6 +5,7 @@ import 'package:indriver_clone_flutter/src/presentation/pages/client/home/bloc/C
 import 'package:indriver_clone_flutter/src/presentation/pages/client/home/bloc/ClientHomeState.dart';
 import 'package:indriver_clone_flutter/src/presentation/pages/client/mapSeeker/ClientMapSeekerPage.dart';
 import 'package:indriver_clone_flutter/src/presentation/pages/profile/info/ProfileInfoPage.dart';
+import 'package:indriver_clone_flutter/src/presentation/pages/roles/RolesPage.dart';
 
 class ClientHomePage extends StatefulWidget {
   const ClientHomePage({Key? key}) : super(key: key);
@@ -17,6 +18,7 @@ class _ClientHomePageState extends State<ClientHomePage> {
   List<Widget> pageList = <Widget>[
     ClientMapSeekerPage(), // Agrega el widget de mapa como primera opción
     ProfileInfoPage(),
+    RolesPage(),
   ];
 
   @override
@@ -65,6 +67,14 @@ class _ClientHomePageState extends State<ClientHomePage> {
                   selected: state.pageIndex == 1,
                   onTap: () {
                     context.read<ClientHomeBloc>().add(ChangeDrawerPage(pageIndex: 1));
+                    Navigator.pop(context);
+                  },
+                ),
+                  ListTile(
+                  title: Text('Roles de Usuario'),
+                  selected: state.pageIndex == 2,
+                  onTap: () {
+                    context.read<ClientHomeBloc>().add(ChangeDrawerPage(pageIndex: 2));
                     Navigator.pop(context);
                   },
                 ),

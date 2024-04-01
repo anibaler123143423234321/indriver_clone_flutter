@@ -6,6 +6,7 @@ import 'package:indriver_clone_flutter/src/presentation/pages/client/mapSeeker/C
 import 'package:indriver_clone_flutter/src/presentation/pages/driver/home/bloc/DriverHomeBloc.dart';
 import 'package:indriver_clone_flutter/src/presentation/pages/driver/home/bloc/DriverHomeState.dart';
 import 'package:indriver_clone_flutter/src/presentation/pages/driver/home/bloc/DriverHomeEvent.dart';
+import 'package:indriver_clone_flutter/src/presentation/pages/driver/mapLocation/DriverMapLocationPage.dart';
 import 'package:indriver_clone_flutter/src/presentation/pages/profile/info/ProfileInfoPage.dart';
 import 'package:indriver_clone_flutter/src/presentation/pages/roles/RolesPage.dart';
 
@@ -18,7 +19,7 @@ class DriverHomePage extends StatefulWidget {
 
 class _DriverHomePageState extends State<DriverHomePage> {
   List<Widget> pageList = <Widget>[
-
+    DriverMapLocationPage(),
     ProfileInfoPage(),
     RolesPage(),
   ];
