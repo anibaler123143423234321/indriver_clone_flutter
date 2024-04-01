@@ -27,7 +27,7 @@ class ClientMapBookingInfoState extends Equatable {
   ClientMapBookingInfoState({
     this.position,
     this.controller,
-    this.cameraPosition = const CameraPosition(target: LatLng(4.7449125, -74.1113708), zoom: 14.0),
+    this.cameraPosition = const CameraPosition(target: LatLng(4.7449125, -74.1113708), zoom: 18.0),
     this.pickUpLatLng,
     this.destinationLatLng,
     this.pickUpDescription = '',

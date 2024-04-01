@@ -56,4 +56,8 @@ class AddDriverPositionMarker extends ClientMapSeekerEvent {
     required this.lng,
   });
 
+
 }
+
+class ConnectSocketIO extends ClientMapSeekerEvent{}
+class DisconnectSocketIO extends ClientMapSeekerEvent{}

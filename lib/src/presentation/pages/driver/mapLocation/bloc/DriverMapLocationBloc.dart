@@ -5,27 +5,26 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:indriver_clone_flutter/src/domain/models/AuthResponse.dart';
 import 'package:indriver_clone_flutter/src/domain/useCases/auth/AuthUseCase.dart';
 import 'package:indriver_clone_flutter/src/domain/useCases/geolocator/GeolocatorUseCases.dart';
+import 'package:indriver_clone_flutter/src/domain/useCases/socket/SocketUseCases.dart';
 import 'package:indriver_clone_flutter/src/presentation/pages/driver/mapLocation/bloc/DriverMapLocationEvent.dart';
 import 'package:indriver_clone_flutter/src/presentation/pages/driver/mapLocation/bloc/DriverMapLocationState.dart';
 
 class DriverMapLocationBloc
     extends Bloc<DriverMapLocationEvent, DriverMapLocationState> {
+  SocketUseCases socketUseCases;
   GeolocatorUseCases geolocatorUseCases;
-  AuthUseCases authUseCases;
   StreamSubscription? positionSubscription;
 
-  DriverMapLocationBloc(this.geolocatorUseCases, this.authUseCases)
+  DriverMapLocationBloc(this.geolocatorUseCases, this.socketUseCases)
       : super(DriverMapLocationState()) {
       
     on<DriverMapLocationInitEvent>((event, emit) async {
       Completer<GoogleMapController> controller =
           Completer<GoogleMapController>();
-      AuthResponse authResponse = await authUseCases.getUserSession.run();
       emit(
         state.copyWith(
           controller: controller,
-          idDriver: authResponse.user.id
-        )
+                  )
       );
     });
 
@@ -69,7 +68,7 @@ class DriverMapLocationBloc
         await googleMapController.animateCamera(CameraUpdate.newCameraPosition(
           CameraPosition(
             target: LatLng(event.lat, event.lng),
-            zoom: 13,
+            zoom: 16,
             bearing: 0
           )
         ));
@@ -92,5 +91,15 @@ class DriverMapLocationBloc
     on<StopLocation>((event, emit) {
       positionSubscription?.cancel();
     });
+
+    on<ConnectSocketIo>((event, emit) {
+      socketUseCases.connect.run();
+    });
+
+    on<DisconnectSocketIo>((event, emit) {
+      socketUseCases.disconnect.run();
+    });
+
+
   }
 }

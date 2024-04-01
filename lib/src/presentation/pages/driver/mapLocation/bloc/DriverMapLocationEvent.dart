@@ -16,7 +16,6 @@ class AddMyPositionMarker extends DriverMapLocationEvent {
   final double lng;
   AddMyPositionMarker({ required this.lat, required this.lng });
 }
-class EmitDriverPositionSocketIO extends DriverMapLocationEvent {}
 class ChangeMapCameraPosition extends DriverMapLocationEvent {
   final double lat;
   final double lng;
@@ -26,12 +25,5 @@ class ChangeMapCameraPosition extends DriverMapLocationEvent {
   });
 }
 
-class SaveLocationData extends DriverMapLocationEvent {
-  final DriverPosition driverPosition;
-  SaveLocationData({ required this.driverPosition });
-}
-
-class DeleteLocationData extends DriverMapLocationEvent {
-  final int idDriver;
-  DeleteLocationData({ required this.idDriver });
-}
+class ConnectSocketIo extends DriverMapLocationEvent{}
+class DisconnectSocketIo extends DriverMapLocationEvent{}
