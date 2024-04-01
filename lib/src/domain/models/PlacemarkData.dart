@@ -10,4 +10,4 @@ class PlacemarkData {
     required this.lng,
   });
 
-}
+} 

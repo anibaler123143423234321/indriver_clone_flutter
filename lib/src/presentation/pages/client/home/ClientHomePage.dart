@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:indriver_clone_flutter/main.dart';
 import 'package:indriver_clone_flutter/src/presentation/pages/client/home/bloc/ClientHomeBloc.dart';
 import 'package:indriver_clone_flutter/src/presentation/pages/client/home/bloc/ClientHomeEvent.dart';
 import 'package:indriver_clone_flutter/src/presentation/pages/client/home/bloc/ClientHomeState.dart';
@@ -8,14 +7,17 @@ import 'package:indriver_clone_flutter/src/presentation/pages/client/mapSeeker/C
 import 'package:indriver_clone_flutter/src/presentation/pages/profile/info/ProfileInfoPage.dart';
 
 class ClientHomePage extends StatefulWidget {
-  const ClientHomePage({super.key});
+  const ClientHomePage({Key? key}) : super(key: key);
 
   @override
-  State<ClientHomePage> createState() => _nameState();
+  State<ClientHomePage> createState() => _ClientHomePageState();
 }
 
-class _nameState extends State<ClientHomePage> {
-  List<Widget> pageList = <Widget>[ClientMapSeekerPage(), ProfileInfoPage()];
+class _ClientHomePageState extends State<ClientHomePage> {
+  List<Widget> pageList = <Widget>[
+    ClientMapSeekerPage(), // Agrega el widget de mapa como primera opción
+    ProfileInfoPage(),
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -35,26 +37,26 @@ class _nameState extends State<ClientHomePage> {
               padding: EdgeInsets.zero,
               children: [
                 DrawerHeader(
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                          begin: Alignment.topRight,
-                          end: Alignment.bottomLeft,
-                          colors: [
-                            Color.fromARGB(255, 12, 38, 145),
-                            Color.fromARGB(255, 34, 156, 249),
-                          ]),
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.topRight,
+                      end: Alignment.bottomLeft,
+                      colors: [
+                        Color.fromARGB(255, 12, 38, 145),
+                        Color.fromARGB(255, 34, 156, 249),
+                      ],
                     ),
-                    child: Text(
-                      'Menu del Cliente',
-                      style: TextStyle(color: Colors.white),
-                    )),
+                  ),
+                  child: Text(
+                    'Menu del Cliente',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
                 ListTile(
-                  title: Text('Mapa de Busqueda'),
+                  title: Text('Mapa del Buscador'), // Cambia el nombre para el nuevo widget
                   selected: state.pageIndex == 0,
                   onTap: () {
-                    context
-                        .read<ClientHomeBloc>()
-                        .add(ChangeDrawerPage(pageIndex: 0));
+                    context.read<ClientHomeBloc>().add(ChangeDrawerPage(pageIndex: 0));
                     Navigator.pop(context);
                   },
                 ),
@@ -62,9 +64,7 @@ class _nameState extends State<ClientHomePage> {
                   title: Text('Perfil de Usuario'),
                   selected: state.pageIndex == 1,
                   onTap: () {
-                    context
-                        .read<ClientHomeBloc>()
-                        .add(ChangeDrawerPage(pageIndex: 1));
+                    context.read<ClientHomeBloc>().add(ChangeDrawerPage(pageIndex: 1));
                     Navigator.pop(context);
                   },
                 ),
@@ -72,10 +72,11 @@ class _nameState extends State<ClientHomePage> {
                   title: Text('Cerrar Sesión'),
                   onTap: () {
                     context.read<ClientHomeBloc>().add(Logout());
-                    Navigator.pushAndRemoveUntil(
-                        context,
-                        MaterialPageRoute(builder: (context) => MyApp()),
-                        (route) => false);
+                    Navigator.pushNamedAndRemoveUntil(
+                      context,
+                      'login',
+                      (route) => false,
+                    );
                   },
                 )
               ],

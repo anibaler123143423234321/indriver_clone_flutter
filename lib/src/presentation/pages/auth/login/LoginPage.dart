@@ -32,7 +32,12 @@ class _LoginPageState extends State<LoginPage> {
           print('Data: ${response.data}');
           final authResponse = response.data as AuthResponse;
           context.read<LoginBloc>().add(SaveUserSession(authResponse: response.data));
+          if(authResponse.user.roles!.length >1){
+           Navigator.pushNamedAndRemoveUntil(context, 'roles', (route) => false);
+          }
+          else{
           Navigator.pushNamedAndRemoveUntil(context, 'client/home', (route) => false);
+          }
         }
       },
       child: BlocBuilder<LoginBloc, LoginState>(
