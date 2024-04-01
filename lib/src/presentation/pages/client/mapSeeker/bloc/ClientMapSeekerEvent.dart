@@ -36,6 +36,7 @@ class OnAutoCompletedDestinationSelected extends ClientMapSeekerEvent {
 }
 
 class ListenDriversPositionSocketIO extends ClientMapSeekerEvent {}
+
 class ConnectSocketIO extends ClientMapSeekerEvent{}
 class DisconnectSocketIO extends ClientMapSeekerEvent{}
 class AddDriverPositionMarker extends ClientMapSeekerEvent{

@@ -4,11 +4,12 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:indriver_clone_flutter/blocProviders.dart';
 import 'package:indriver_clone_flutter/injection.dart';
 import 'package:indriver_clone_flutter/src/presentation/pages/auth/login/LoginPage.dart';
-import 'package:indriver_clone_flutter/src/presentation/pages/auth/login/bloc/LoginBloc.dart';
-import 'package:indriver_clone_flutter/src/presentation/pages/auth/login/bloc/LoginEvent.dart';
 import 'package:indriver_clone_flutter/src/presentation/pages/auth/register/RegisterPage.dart';
 import 'package:indriver_clone_flutter/src/presentation/pages/client/home/ClientHomePage.dart';
+import 'package:indriver_clone_flutter/src/presentation/pages/client/mapBookingInfo/ClientMapBookingInfoPage.dart';
+import 'package:indriver_clone_flutter/src/presentation/pages/driver/home/DriverHomePage.dart';
 import 'package:indriver_clone_flutter/src/presentation/pages/profile/update/ProfileUpdatePage.dart';
+import 'package:indriver_clone_flutter/src/presentation/pages/roles/RolesPage.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -35,7 +36,10 @@ class MyApp extends StatelessWidget {
         routes: {
           'login': (BuildContext context) => LoginPage(),
           'register': (BuildContext context) => RegisterPage(),
+          'roles': (BuildContext context) => RolesPage(),
           'client/home': (BuildContext context) => ClientHomePage(),
+          'driver/home': (BuildContext context) => DriverHomePage(),
+          'client/map/booking/': (BuildContext context) => ClientMapBookingInfoPage(),
           'profile/update': (BuildContext context) => ProfileUpdatePage(),
         },
       ),
