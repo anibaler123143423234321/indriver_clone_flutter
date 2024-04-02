@@ -40,6 +40,12 @@ class ListenDriversDisconnectedSocketIO extends ClientMapSeekerEvent {}
 
 class ConnectSocketIO extends ClientMapSeekerEvent{}
 class DisconnectSocketIO extends ClientMapSeekerEvent{}
+class RemoteDriverPositionMarker extends ClientMapSeekerEvent{
+  final String idSocket;
+
+  RemoteDriverPositionMarker({required this.idSocket});
+}
+
 class AddDriverPositionMarker extends ClientMapSeekerEvent{
   final String idSocket;
   final int id;

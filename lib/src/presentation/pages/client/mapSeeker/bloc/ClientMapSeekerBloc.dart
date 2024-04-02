@@ -83,6 +83,7 @@ class ClientMapSeekerBloc
         )
       );
       add(ListenDriversPositionSocketIO());
+      add(ListenDriversDisconnectedSocketIO());
     });
 
     on<DisconnectSocketIO>((event, emit) {
@@ -113,7 +114,21 @@ class ClientMapSeekerBloc
     });
 
     
+    on<ListenDriversDisconnectedSocketIO>((event, emit) {
+      state.socket?.on('driver_disconnected', (data) {
+        print('Id: ${data['id_socket']}');
+        add(RemoteDriverPositionMarker(idSocket: data['id_socket'] as String));
+    });
+    
+  });
 
+  on<RemoteDriverPositionMarker>((event, emit) {
+      emit(
+        state.copyWith(
+          markers: Map.of(state.markers)..remove(MarkerId(event.idSocket))
+        )
+      );
+  });
 
     on<AddDriverPositionMarker>((event, emit) async {
       BitmapDescriptor descriptor = await geolocatorUseCases.createMarker.run('assets/img/car_pin.png');
