@@ -3,13 +3,19 @@
 import 'package:indriver_clone_flutter/src/data/api/ApiConfig.dart';
 import 'package:indriver_clone_flutter/src/data/dataSource/local/SharefPref.dart';
 import 'package:indriver_clone_flutter/src/data/dataSource/remote/services/AuthService.dart';
+import 'package:indriver_clone_flutter/src/data/dataSource/remote/services/ClientRequestsService.dart';
+import 'package:indriver_clone_flutter/src/data/dataSource/remote/services/DriversPositionService.dart';
 import 'package:indriver_clone_flutter/src/data/dataSource/remote/services/UsersService.dart';
 import 'package:indriver_clone_flutter/src/data/repository/AuthRepositoryImpl.dart';
+import 'package:indriver_clone_flutter/src/data/repository/ClientRequestsRepositoryImpl.dart';
+import 'package:indriver_clone_flutter/src/data/repository/DriversPositionRepositoryImpl.dart';
 import 'package:indriver_clone_flutter/src/data/repository/GeolocatorRepositoryImpl.dart';
 import 'package:indriver_clone_flutter/src/data/repository/SocketRepositoryImpl.dart';
 import 'package:indriver_clone_flutter/src/data/repository/UsersRepositoryImpl.dart';
 import 'package:indriver_clone_flutter/src/domain/models/AuthResponse.dart';
 import 'package:indriver_clone_flutter/src/domain/repository/AuthRepository.dart';
+import 'package:indriver_clone_flutter/src/domain/repository/ClientRequestsRepository.dart';
+import 'package:indriver_clone_flutter/src/domain/repository/DriversPositionRepository.dart';
 import 'package:indriver_clone_flutter/src/domain/repository/GeolocatorRepository.dart';
 import 'package:indriver_clone_flutter/src/domain/repository/SocketRepository.dart';
 import 'package:indriver_clone_flutter/src/domain/repository/UsersRepository.dart';
@@ -19,6 +25,12 @@ import 'package:indriver_clone_flutter/src/domain/useCases/auth/LoginUseCase.dar
 import 'package:indriver_clone_flutter/src/domain/useCases/auth/LogoutUseCase.dart';
 import 'package:indriver_clone_flutter/src/domain/useCases/auth/RegisterUseCase.dart';
 import 'package:indriver_clone_flutter/src/domain/useCases/auth/SaveUserSessionUseCase.dart';
+import 'package:indriver_clone_flutter/src/domain/useCases/client-requests/ClientRequestsUseCases.dart';
+import 'package:indriver_clone_flutter/src/domain/useCases/client-requests/getTimeAndDistanceUseCase.dart';
+import 'package:indriver_clone_flutter/src/domain/useCases/drivers-position/CreateDriverPositionUseCase.dart';
+import 'package:indriver_clone_flutter/src/domain/useCases/drivers-position/DeleteDriverPositionUseCase.dart';
+import 'package:indriver_clone_flutter/src/domain/useCases/drivers-position/DriversPositionUseCases.dart';
+import 'package:indriver_clone_flutter/src/domain/useCases/drivers-position/GetDriverPositionUseCase.dart';
 import 'package:indriver_clone_flutter/src/domain/useCases/geolocator/CreateMarkerUseCase.dart';
 import 'package:indriver_clone_flutter/src/domain/useCases/geolocator/FindPositionUseCase.dart';
 import 'package:indriver_clone_flutter/src/domain/useCases/geolocator/GeolocatorUseCases.dart';
@@ -66,10 +78,28 @@ abstract class AppModule{
   UsersService get usersService => UsersService(token);
 
   @injectable
+  DriversPositionService get driversPositionService => DriversPositionService();
+
+  @injectable
+  ClientRequestsService get clientRequestsService => ClientRequestsService();
+
+
+
+
+  @injectable
   AuthRepository get authRepository => AuthRepositoryImpl(authService, sharefPref);
 
   @injectable
   UsersRepository get usersRepository => UsersRepositoryImpl(usersService);
+
+  @injectable
+  DriverPositionRepository get driversPositionRepository => DriversPositionRepositoryImpl(driversPositionService);
+
+  @injectable
+  ClientRequestsRepository get clientRequestsRepository => ClientRequestsRepositoryImpl(clientRequestsService);
+
+
+
 
   @injectable
   SocketRepository get socketRepository => SocketRepositoryImpl(socket);
@@ -108,4 +138,18 @@ abstract class AppModule{
     disconnect: DisconnectSocketUseCase(socketRepository)
   );
 
+  @injectable
+   DriversPositionUseCases get driversPositionUseCases => DriversPositionUseCases(
+    createDriverPosition: CreateDriverPositionUseCase(driversPositionRepository),
+    deleteDriverPosition: DeleteDriverPositionUseCase(driversPositionRepository),
+    getDriverPosition: GetDriverPositionUseCase(driversPositionRepository)
+  );
+  
+
+   @injectable
+   ClientRequestsUseCases get clientRequestsUseCases => ClientRequestsUseCases(
+    getTimeAndDistance: GetTimeAndDistanceUseCase(clientRequestsRepository),
+
+  );
+  
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:indriver_clone_flutter/src/domain/models/TimeAndDistanceValues.dart';
 import 'package:indriver_clone_flutter/src/presentation/pages/client/mapBookingInfo/bloc/ClientMapBookingInfoState.dart';
 import 'package:indriver_clone_flutter/src/presentation/widgets/DefaultIconBack.dart';
 import 'package:indriver_clone_flutter/src/presentation/widgets/DefaultTextField.dart';
@@ -7,8 +8,8 @@ import 'package:indriver_clone_flutter/src/presentation/widgets/DefaultTextField
 class ClientMapBookingInfoContent extends StatelessWidget {
 
   ClientMapBookingInfoState state;
-
-  ClientMapBookingInfoContent(this.state);
+  TimeAndDistanceValues timeAndDistanceValues;
+  ClientMapBookingInfoContent(this.state, this.timeAndDistanceValues);
 
   
 
@@ -86,7 +87,12 @@ class ClientMapBookingInfoContent extends StatelessWidget {
                 fontSize: 15
               ),
             ),
-           
+            subtitle: Text(
+              '${timeAndDistanceValues.distance.text} y ${timeAndDistanceValues.duration.text}',
+              style: TextStyle(
+                fontSize: 13
+              ),
+            ),
             leading: Icon(Icons.timer),
           ),
           ListTile(
@@ -96,7 +102,12 @@ class ClientMapBookingInfoContent extends StatelessWidget {
                 fontSize: 15
               ),
             ),
-           
+            subtitle: Text(
+              '\$${timeAndDistanceValues.recommendedValue}',
+              style: TextStyle(
+                fontSize: 13
+              ),
+            ),
             leading: Icon(Icons.money),
           ),
           DefaultTextField(

@@ -2,7 +2,10 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:indriver_clone_flutter/src/domain/models/TimeAndDistanceValues.dart';
+import 'package:indriver_clone_flutter/src/domain/useCases/client-requests/ClientRequestsUseCases.dart';
 import 'package:indriver_clone_flutter/src/domain/useCases/geolocator/GeolocatorUseCases.dart';
+import 'package:indriver_clone_flutter/src/domain/utils/Resource.dart';
 import 'package:indriver_clone_flutter/src/presentation/pages/client/mapBookingInfo/bloc/ClientMapBookingInfoEvent.dart';
 import 'package:indriver_clone_flutter/src/presentation/pages/client/mapBookingInfo/bloc/ClientMapBookingInfoState.dart';
 import 'package:indriver_clone_flutter/src/presentation/utils/BlocFormItem.dart';
@@ -11,9 +14,9 @@ import 'package:indriver_clone_flutter/src/presentation/utils/BlocFormItem.dart'
 class ClientMapBookingInfoBloc extends Bloc<ClientMapBookingInfoEvent, ClientMapBookingInfoState> {
 
   GeolocatorUseCases geolocatorUseCases;
+  ClientRequestsUseCases clientRequestsUseCases;
 
-
-  ClientMapBookingInfoBloc(this.geolocatorUseCases): super(ClientMapBookingInfoState()) {
+  ClientMapBookingInfoBloc(this.geolocatorUseCases, this.clientRequestsUseCases): super(ClientMapBookingInfoState()) {
     on<ClientMapBookingInfoInitEvent>((event, emit) async {
       Completer<GoogleMapController> controller = Completer<GoogleMapController>();
       emit(
@@ -63,7 +66,7 @@ class ClientMapBookingInfoBloc extends Bloc<ClientMapBookingInfoEvent, ClientMap
         )
       ));
     });  
-
+/*
     on<FareOfferedChanged>((event, emit) {
       emit(
         state.copyWith(fareOffered: BlocFormItem(
@@ -72,7 +75,27 @@ class ClientMapBookingInfoBloc extends Bloc<ClientMapBookingInfoEvent, ClientMap
         ))
       );
     });
+*/
 
+    on<GetTimeAndDistanceValues>((event, emit) async {
+        emit(
+            state.copyWith(
+              responseTimeAndDistance: Loading() 
+            )
+        );
+        Resource<TimeAndDistanceValues> response = await clientRequestsUseCases.getTimeAndDistance.run(
+          state.pickUpLatLng!.latitude, 
+          state.pickUpLatLng!.longitude, 
+          state.destinationLatLng!.latitude, 
+          state.destinationLatLng!.longitude
+          );
+          emit(
+            state.copyWith(
+              responseTimeAndDistance: response 
+            )
+          );
+    });
+    
      on<AddPolyline>((event, emit) async {
       List<LatLng> polylineCoordinates = await geolocatorUseCases.getPolyline.run(state.pickUpLatLng!, state.destinationLatLng!);
       PolylineId id = PolylineId("MyRoute");

@@ -19,7 +19,7 @@ class ClientMapBookingInfoState extends Equatable {
   final LatLng? destinationLatLng;
   final String pickUpDescription;
   final String destinationDescription;
-  //final Resource? responseTimeAndDistance;
+  final Resource? responseTimeAndDistance;
   //final Resource? responseClientRequest;
   //final BlocFormItem fareOffered;
   
@@ -34,7 +34,7 @@ class ClientMapBookingInfoState extends Equatable {
     this.destinationDescription = '',
     this.markers = const <MarkerId, Marker>{},
     this.polylines = const <PolylineId, Polyline>{},
-    //this.responseTimeAndDistance,
+    this.responseTimeAndDistance,
     //this.responseClientRequest,
     //this.fareOffered = const BlocFormItem(error: 'Ingresa la tarifa')
   });
@@ -50,8 +50,8 @@ class ClientMapBookingInfoState extends Equatable {
     Map<MarkerId, Marker>? markers,
     Map<PolylineId, Polyline>? polylines,
     Resource? responseTimeAndDistance,
-    Resource? responseClientRequest,
-    BlocFormItem? fareOffered
+    //Resource? responseClientRequest,
+    //BlocFormItem? fareOffered
   }) {
     return ClientMapBookingInfoState(
       position: position ?? this.position,
@@ -63,7 +63,7 @@ class ClientMapBookingInfoState extends Equatable {
       destinationLatLng: destinationLatLng ?? this.destinationLatLng,
       pickUpDescription: pickUpDescription ?? this.pickUpDescription,
       destinationDescription: destinationDescription ?? this.destinationDescription,
-      //responseTimeAndDistance: responseTimeAndDistance ?? this.responseTimeAndDistance,
+      responseTimeAndDistance: responseTimeAndDistance ?? this.responseTimeAndDistance,
       //responseClientRequest: responseClientRequest,
       //fareOffered: fareOffered ?? this.fareOffered
     );
@@ -71,6 +71,6 @@ class ClientMapBookingInfoState extends Equatable {
 
 
   @override
-  List<Object?> get props => [position, markers, polylines, controller, cameraPosition, pickUpLatLng, destinationLatLng, pickUpDescription, destinationDescription];
+  List<Object?> get props => [position, markers, polylines, controller, cameraPosition, pickUpLatLng, destinationLatLng, pickUpDescription, destinationDescription, responseTimeAndDistance];
 
 }
