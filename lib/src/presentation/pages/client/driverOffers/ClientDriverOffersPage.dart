@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:indriver_clone_flutter/src/domain/models/DriverTripRequest.dart';
 import 'package:indriver_clone_flutter/src/domain/utils/Resource.dart';
+import 'package:indriver_clone_flutter/src/presentation/pages/client/driverOffers/ClientDriverOffersItem.dart';
 import 'package:indriver_clone_flutter/src/presentation/pages/client/driverOffers/bloc/ClientDriverOffersBloc.dart';
 import 'package:indriver_clone_flutter/src/presentation/pages/client/driverOffers/bloc/ClientDriverOffersEvent.dart';
 import 'package:indriver_clone_flutter/src/presentation/pages/client/driverOffers/bloc/ClientDriverOffersState.dart';
@@ -41,23 +42,31 @@ class _ClientDriverOffersPageState extends State<ClientDriverOffersPage> {
 
           if (response is Loading) {
             return Center(child: CircularProgressIndicator());
-          } else if (response is Success) {
-            List<DriverTripRequest> driverTripRequests = response.data as List<DriverTripRequest>;
+          } 
+          else if (response is Success) {
+            List<DriverTripRequest> driverTripRequest = response.data as List<DriverTripRequest>;
             return ListView.builder(
-              itemCount: driverTripRequests.length,
-              itemBuilder: (context, index) {
-                return ListTile(
-                  title: Text('Trip ID: ${driverTripRequests[index].id.toString()}'),
-                  subtitle: Text('Driver ID: ${driverTripRequests[index].idDriver.toString()}'),
-                  // Puedes añadir más detalles aquí según tu modelo de datos
-                );
-              },
-            );
+                itemCount: driverTripRequest.length,
+                itemBuilder: (context, index) {
+                  return ClientDriverOffersItem(driverTripRequest[index]);
+                });
           }
           return Center(
-            child: Text('No data available'),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  'Esperando conductores...',
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold
+                  ),
+                )
+              ],
+            ),
           );
-        },
+        }
       ),
     );
   }

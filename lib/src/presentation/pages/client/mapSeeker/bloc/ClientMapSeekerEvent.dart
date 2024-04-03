@@ -38,8 +38,6 @@ class OnAutoCompletedDestinationSelected extends ClientMapSeekerEvent {
 class ListenDriversPositionSocketIO extends ClientMapSeekerEvent {}
 class ListenDriversDisconnectedSocketIO extends ClientMapSeekerEvent {}
 
-class ConnectSocketIO extends ClientMapSeekerEvent{}
-class DisconnectSocketIO extends ClientMapSeekerEvent{}
 class RemoteDriverPositionMarker extends ClientMapSeekerEvent{
   final String idSocket;
 

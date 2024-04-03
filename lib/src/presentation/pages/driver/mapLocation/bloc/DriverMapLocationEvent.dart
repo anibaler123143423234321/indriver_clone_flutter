@@ -37,6 +37,5 @@ class ChangeMapCameraPosition extends DriverMapLocationEvent {
   });
 }
 
-class ConnectSocketIo extends DriverMapLocationEvent{}
-class DisconnectSocketIo extends DriverMapLocationEvent{}
+
 class EmitDriverPositionSocketIo extends DriverMapLocationEvent{}

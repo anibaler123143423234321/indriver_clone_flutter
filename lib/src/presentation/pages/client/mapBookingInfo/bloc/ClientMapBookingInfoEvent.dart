@@ -37,6 +37,6 @@ class CreateClientRequest extends ClientMapBookingInfoEvent {}
 class GetTimeAndDistanceValues extends ClientMapBookingInfoEvent {}
 class AddPolyline extends ClientMapBookingInfoEvent {}
 class EmitNewClientRequestSocketIO extends ClientMapBookingInfoEvent {
-  final int idClientRequest;
-  EmitNewClientRequestSocketIO({required this.idClientRequest}); 
+  //final int idClientRequest;
+  //EmitNewClientRequestSocketIO({required this.idClientRequest}); 
 }

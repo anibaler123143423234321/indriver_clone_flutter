@@ -10,7 +10,7 @@ import 'package:indriver_clone_flutter/src/domain/utils/Resource.dart';
 import 'package:http/http.dart' as http;
 class ClientRequestsService {
 
-  Future<Resource<bool>> create(ClientRequest clientRequest) async {
+  Future<Resource<int>> create(ClientRequest clientRequest) async {
 
     try {
       Uri url = Uri.http(ApiConfig.API_PROJECT, '/client-requests');
@@ -50,7 +50,7 @@ class ClientRequestsService {
       }
       
     } catch (e) {
-      print('Error: $e');
+      print('Error upcli: $e');
       return ErrorData(e.toString());
     }
   }
@@ -73,7 +73,7 @@ class ClientRequestsService {
       }
       
     } catch (e) {
-      print('Error: $e');
+      print('Error updri: $e');
       return ErrorData(e.toString());
     }
   }
@@ -121,7 +121,7 @@ class ClientRequestsService {
       }
       
     } catch (e) {
-      print('Error: $e');
+      print('Error updateDriverAssigned: $e');
       return ErrorData(e.toString());
     }
 
@@ -148,7 +148,7 @@ class ClientRequestsService {
       }
       
     } catch (e) {
-      print('Error: $e');
+      print('Error getTimeAndDistanceClientRequets: $e');
       return ErrorData(e.toString());
     }
 
@@ -172,7 +172,7 @@ class ClientRequestsService {
     }
     
   } catch (e) {
-    print('Error: $e');
+    print('Error getnear: $e');
     return ErrorData(e.toString());
   }
 
@@ -194,7 +194,7 @@ class ClientRequestsService {
       }
       
     } catch (e) {
-      print('Error: $e');
+      print('Error getByDriverAssigned: $e');
       return ErrorData(e.toString());
     }
   }
@@ -214,7 +214,7 @@ class ClientRequestsService {
       }
       
     } catch (e) {
-      print('Error: $e');
+      print('ErrorgetByClientAssigned: $e');
       return ErrorData(e.toString());
     }
   }
@@ -235,7 +235,7 @@ class ClientRequestsService {
       }
       
     } catch (e) {
-      print('Error: $e');
+      print('Error getByClientRequest: $e');
       return ErrorData(e.toString());
     }
 

@@ -16,7 +16,6 @@ class ClientMapSeekerState extends Equatable {
   final LatLng? destinationLatLng;
   final String pickUpDescription;
   final String destinationDescription;
-  final Socket? socket;
 
 
   ClientMapSeekerState({
@@ -29,7 +28,6 @@ class ClientMapSeekerState extends Equatable {
     this.pickUpDescription = '',
     this.destinationDescription = '',
     this.markers = const <MarkerId, Marker>{},
-    this.socket
   });
 
   ClientMapSeekerState copyWith({
@@ -42,7 +40,6 @@ class ClientMapSeekerState extends Equatable {
     String? pickUpDescription,
     String? destinationDescription,
     Map<MarkerId, Marker>? markers,
-    Socket? socket
   }) {
     
     return ClientMapSeekerState(
@@ -55,12 +52,11 @@ class ClientMapSeekerState extends Equatable {
       destinationLatLng: destinationLatLng ?? this.destinationLatLng,
       pickUpDescription: pickUpDescription ?? this.pickUpDescription,
       destinationDescription: destinationDescription ?? this.destinationDescription,
-      socket: socket ?? this.socket
     );
   }
 
 
   @override
-  List<Object?> get props => [position, markers, controller, cameraPosition, placemarkData, pickUpLatLng, destinationLatLng, pickUpDescription, destinationDescription, socket];
+  List<Object?> get props => [position, markers, controller, cameraPosition, placemarkData, pickUpLatLng, destinationLatLng, pickUpDescription, destinationDescription];
 
 }

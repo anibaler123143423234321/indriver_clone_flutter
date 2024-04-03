@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:indriver_clone_flutter/blocSocketIO/BlocSocketIO.dart';
+import 'package:indriver_clone_flutter/blocSocketIO/BlocSocketIOEvent.dart';
 import 'package:indriver_clone_flutter/main.dart';
 import 'package:indriver_clone_flutter/src/presentation/pages/driver/clientRequests/DriverClientRequestsPage.dart';
 import 'package:indriver_clone_flutter/src/presentation/pages/driver/home/bloc/DriverHomeBloc.dart';
@@ -95,6 +97,7 @@ class _DriverHomePageState extends State<DriverHomePage> {
                   title: const Text('Cerrar sesion'),
                   onTap: () {
                     context.read<DriverHomeBloc>().add(Logout());
+                    context.read<BlocSocketIO>().add(DisconnectSocketIO());
                     Navigator.pushAndRemoveUntil(
                       context, 
                       MaterialPageRoute(builder: (context) => MyApp()), 

@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:indriver_clone_flutter/blocSocketIO/BlocSocketIO.dart';
 import 'package:indriver_clone_flutter/src/domain/models/PlacemarkData.dart';
 import 'package:indriver_clone_flutter/src/domain/useCases/geolocator/GeolocatorUseCases.dart';
 import 'package:indriver_clone_flutter/src/domain/useCases/socket/SocketUseCases.dart';
@@ -13,8 +14,9 @@ class ClientMapSeekerBloc
     extends Bloc<ClientMapSeekerEvent, ClientMapSeekerState> {
   GeolocatorUseCases geolocatorUseCases;
   SocketUseCases socketUseCases;
+  BlocSocketIO blocSocketIO;
 
-  ClientMapSeekerBloc(this.geolocatorUseCases, this.socketUseCases) : super(ClientMapSeekerState()) {
+  ClientMapSeekerBloc(this.blocSocketIO,this.geolocatorUseCases, this.socketUseCases) : super(ClientMapSeekerState()) {
     on<ClientMapSeekerInitEvent>((event, emit) {
       Completer<GoogleMapController> controller =
           Completer<GoogleMapController>();
@@ -75,28 +77,10 @@ class ClientMapSeekerBloc
       );
     });
   
- on<ConnectSocketIO>((event, emit) {
-      Socket socket =  socketUseCases.connect.run();
-      emit(
-        state.copyWith(
-          socket: socket
-        )
-      );
-      add(ListenDriversPositionSocketIO());
-      add(ListenDriversDisconnectedSocketIO());
-    });
-
-    on<DisconnectSocketIO>((event, emit) {
-      Socket socket =  socketUseCases.disconnect.run();
-      emit(
-        state.copyWith(
-          socket: socket
-        )
-      );    
-      });
 
     on<ListenDriversPositionSocketIO>((event, emit) {
-      state.socket?.on('new_driver_position', (data) {
+      if( blocSocketIO.state.socket !=null){
+      blocSocketIO.state.socket?.on('new_driver_position', (data) {
         print('DATOS DEL SOCKET IO');
         print('Id: ${data['id_socket']}');
         print('Id: ${data['id']}');
@@ -111,11 +95,12 @@ class ClientMapSeekerBloc
             )
         );
       });
+      }
     });
 
     
     on<ListenDriversDisconnectedSocketIO>((event, emit) {
-      state.socket?.on('driver_disconnected', (data) {
+      blocSocketIO.state.socket?.on('driver_disconnected', (data) {
         print('Id: ${data['id_socket']}');
         add(RemoteDriverPositionMarker(idSocket: data['id_socket'] as String));
     });

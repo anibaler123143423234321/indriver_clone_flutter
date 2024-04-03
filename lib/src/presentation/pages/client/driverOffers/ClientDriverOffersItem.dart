@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:indriver_clone_flutter/src/domain/models/DriverTripRequest.dart';
 import 'package:indriver_clone_flutter/src/presentation/pages/client/driverOffers/bloc/ClientDriverOffersBloc.dart';
@@ -63,23 +62,25 @@ class ClientDriverOffersItem extends StatelessWidget {
                   ),
                 ),
               ),
-              DefaultButton(
-                text: 'Aceptar', 
-                onPressed: () {
-                  context.read<ClientDriverOffersBloc>().add(
-                    AssignDriver(
-                      idClientRequest: driverTripRequest!.idClientRequest, 
-                      idDriver: driverTripRequest!.idDriver, 
-                      fareAssigned: driverTripRequest!.fareOffered,
-                      context: context
-                    )
-                  );
-                },
-               // width: 120,
-                //height: 40,
-                margin: EdgeInsets.only(right: 20, bottom: 15),
-                color: Colors.blueAccent,
-                textColor: Colors.white,
+              SizedBox(
+                width: 120, // Ancho deseado del botón
+                height: 40, // Alto deseado del botón
+                child: DefaultButton(
+                  text: 'Aceptar', 
+                  onPressed: () {
+                    context.read<ClientDriverOffersBloc>().add(
+                      AssignDriver(
+                        idClientRequest: driverTripRequest!.idClientRequest, 
+                        idDriver: driverTripRequest!.idDriver, 
+                        fareAssigned: driverTripRequest!.fareOffered,
+                        context: context
+                      )
+                    );
+                  },
+                  margin: EdgeInsets.only(right: 20, bottom: 15),
+                  color: Colors.blueAccent,
+                  textColor: Colors.white,
+                ),
               )
             ],
           )

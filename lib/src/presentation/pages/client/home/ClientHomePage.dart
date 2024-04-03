@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:indriver_clone_flutter/blocSocketIO/BlocSocketIO.dart';
+import 'package:indriver_clone_flutter/blocSocketIO/BlocSocketIOEvent.dart';
 import 'package:indriver_clone_flutter/src/presentation/pages/client/home/bloc/ClientHomeBloc.dart';
 import 'package:indriver_clone_flutter/src/presentation/pages/client/home/bloc/ClientHomeEvent.dart';
 import 'package:indriver_clone_flutter/src/presentation/pages/client/home/bloc/ClientHomeState.dart';
@@ -82,6 +84,7 @@ class _ClientHomePageState extends State<ClientHomePage> {
                   title: Text('Cerrar Sesión'),
                   onTap: () {
                     context.read<ClientHomeBloc>().add(Logout());
+                    context.read<BlocSocketIO>().add(DisconnectSocketIO());
                     Navigator.pushNamedAndRemoveUntil(
                       context,
                       'login',

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:indriver_clone_flutter/blocSocketIO/BlocSocketIO.dart';
+import 'package:indriver_clone_flutter/blocSocketIO/BlocSocketIOEvent.dart';
 import 'package:indriver_clone_flutter/src/presentation/pages/driver/mapLocation/bloc/DriverMapLocationEvent.dart';
 import 'package:indriver_clone_flutter/src/presentation/pages/driver/mapLocation/bloc/DriverMapLocationBloc.dart';
 import 'package:indriver_clone_flutter/src/presentation/pages/driver/mapLocation/bloc/DriverMapLocationState.dart';
@@ -22,21 +24,10 @@ class _DriverMapLocationPageState extends State<DriverMapLocationPage> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) { 
       context.read<DriverMapLocationBloc>().add(DriverMapLocationInitEvent());
-      context.read<DriverMapLocationBloc>().add(ConnectSocketIo());
       context.read<DriverMapLocationBloc>().add(FindPosition());
     });
   }
 
-  @override
-  void dispose(){
-    super.dispose();
-    SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
-      if(mounted){
-        context.read<DriverMapLocationBloc>().add(DisconnectSocketIo());
-        context.read<DriverMapLocationBloc>().add(StopLocation());
-      }
-    });
-  }
 
 
   @override
@@ -66,7 +57,7 @@ class _DriverMapLocationPageState extends State<DriverMapLocationPage> {
                   text: 'DETENER LOCALIZACION', 
                   margin: EdgeInsets.only(left: 50, right: 50, bottom: 50),
                   onPressed: () {
-                    context.read<DriverMapLocationBloc>().add(DisconnectSocketIo());
+                    context.read<BlocSocketIO>().add(DisconnectSocketIO());
                     context.read<DriverMapLocationBloc>().add(StopLocation());
                   },
                 ),
@@ -77,5 +68,5 @@ class _DriverMapLocationPageState extends State<DriverMapLocationPage> {
       ),
     );
   }
-
 }
+

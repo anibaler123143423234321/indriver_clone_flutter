@@ -22,10 +22,11 @@ class ClientRequestsRepositoryImpl implements ClientRequestsRepository {
     return clientRequestsService.getTimeAndDistanceClientRequets(originLat, originLng, destinationLat, destinationLng);
   }
 
-  @override
-  Future<Resource<bool>> create(ClientRequest clientRequest) {
+ @override
+  Future<Resource<int>> create(ClientRequest clientRequest) {
     return clientRequestsService.create(clientRequest);
   }
+
 
   @override
   Future<Resource<List<ClientRequestResponse>>> getNearbyTripRequest(double driverLat, double driverLng) {

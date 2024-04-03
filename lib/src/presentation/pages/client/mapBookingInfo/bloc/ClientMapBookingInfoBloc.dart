@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:indriver_clone_flutter/blocSocketIO/BlocSocketIO.dart';
 import 'package:indriver_clone_flutter/src/domain/models/AuthResponse.dart';
 import 'package:indriver_clone_flutter/src/domain/models/ClientRequest.dart';
 import 'package:indriver_clone_flutter/src/domain/models/TimeAndDistanceValues.dart';
@@ -19,9 +20,10 @@ class ClientMapBookingInfoBloc extends Bloc<ClientMapBookingInfoEvent, ClientMap
   GeolocatorUseCases geolocatorUseCases;
   ClientRequestsUseCases clientRequestsUseCases;
   AuthUseCases authUseCases;
+  BlocSocketIO blocSocketIO;
+  
 
-
-  ClientMapBookingInfoBloc(this.geolocatorUseCases, this.clientRequestsUseCases, this.authUseCases): super(ClientMapBookingInfoState()) {
+  ClientMapBookingInfoBloc(this.blocSocketIO, this.geolocatorUseCases, this.clientRequestsUseCases, this.authUseCases): super(ClientMapBookingInfoState()) {
     on<ClientMapBookingInfoInitEvent>((event, emit) async {
       Completer<GoogleMapController> controller = Completer<GoogleMapController>();
       emit(
@@ -72,7 +74,6 @@ class ClientMapBookingInfoBloc extends Bloc<ClientMapBookingInfoEvent, ClientMap
       ));
     });  
 
-
     on<FareOfferedChanged>((event, emit) {
       emit(
         state.copyWith(fareOffered: BlocFormItem(
@@ -84,7 +85,8 @@ class ClientMapBookingInfoBloc extends Bloc<ClientMapBookingInfoEvent, ClientMap
 
     on<CreateClientRequest>((event, emit) async {
       AuthResponse authResponse = await authUseCases.getUserSession.run();
-      Resource<bool> response = await clientRequestsUseCases.createClientRequest.run(
+
+      Resource<int> response = await clientRequestsUseCases.createClientRequest.run(
         ClientRequest(
           idClient: authResponse.user.id!, 
           fareOffered: double.parse(state.fareOffered.value), 
@@ -104,27 +106,35 @@ class ClientMapBookingInfoBloc extends Bloc<ClientMapBookingInfoEvent, ClientMap
       );
     });
 
+    on<EmitNewClientRequestSocketIO>((event, emit) {
+      if (blocSocketIO.state.socket != null) {
+        blocSocketIO.state.socket?.emit('new_client_request', {
+            'id_client_request': 5
+        });
+      }
+    });
 
     on<GetTimeAndDistanceValues>((event, emit) async {
-        emit(
-            state.copyWith(
-              responseTimeAndDistance: Loading() 
-            )
-        );
-        Resource<TimeAndDistanceValues> response = await clientRequestsUseCases.getTimeAndDistance.run(
-          state.pickUpLatLng!.latitude, 
-          state.pickUpLatLng!.longitude, 
-          state.destinationLatLng!.latitude, 
-          state.destinationLatLng!.longitude
-          );
-          emit(
-            state.copyWith(
-              responseTimeAndDistance: response 
-            )
-          );
+      emit(
+        state.copyWith(
+          responseTimeAndDistance: Loading()
+        )
+      );
+      Resource<TimeAndDistanceValues> response = await clientRequestsUseCases.getTimeAndDistance.run(
+        state.pickUpLatLng!.latitude,
+        state.pickUpLatLng!.longitude,
+        state.destinationLatLng!.latitude,
+        state.destinationLatLng!.longitude,
+      );
+      emit(
+        state.copyWith(
+          responseTimeAndDistance: response
+        )
+      );
     });
     
-     on<AddPolyline>((event, emit) async {
+
+    on<AddPolyline>((event, emit) async {
       List<LatLng> polylineCoordinates = await geolocatorUseCases.getPolyline.run(state.pickUpLatLng!, state.destinationLatLng!);
       PolylineId id = PolylineId("MyRoute");
       Polyline polyline = Polyline(
@@ -141,6 +151,8 @@ class ClientMapBookingInfoBloc extends Bloc<ClientMapBookingInfoEvent, ClientMap
         )
       );
     });
+
+    
 
   }
 }

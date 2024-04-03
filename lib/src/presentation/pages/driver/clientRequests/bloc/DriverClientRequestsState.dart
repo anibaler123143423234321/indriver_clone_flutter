@@ -6,12 +6,14 @@ class DriverClientRequestsState extends Equatable {
 
   final Resource? response;
   final Resource? responseCreateDriverTripRequest;
+  final Resource? responseDriverPosition;
   final BlocFormItem fareOffered;
   final int? idDriver;
 
   DriverClientRequestsState({
     this.response,
     this.responseCreateDriverTripRequest,
+    this.responseDriverPosition,
     this.fareOffered = const BlocFormItem(error: 'Ingresa la tarifa'),
     this.idDriver
   });
@@ -25,6 +27,7 @@ class DriverClientRequestsState extends Equatable {
   }) {
     return DriverClientRequestsState(
       response: response ?? this.response,
+      responseDriverPosition: responseDriverPosition ?? this.responseDriverPosition,
       responseCreateDriverTripRequest: responseCreateDriverTripRequest,
       fareOffered: fareOffered ?? this.fareOffered,
       idDriver: idDriver ?? this.idDriver
@@ -32,6 +35,6 @@ class DriverClientRequestsState extends Equatable {
   }
 
   @override
-  List<Object?> get props => [response, responseCreateDriverTripRequest, fareOffered, idDriver];
+  List<Object?> get props => [response, responseCreateDriverTripRequest, responseDriverPosition, fareOffered, idDriver];
 
 }

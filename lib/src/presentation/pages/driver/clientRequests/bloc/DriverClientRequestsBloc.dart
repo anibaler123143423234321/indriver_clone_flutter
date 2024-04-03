@@ -1,14 +1,18 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:indriver_clone_flutter/blocSocketIO/BlocSocketIO.dart';
 import 'package:indriver_clone_flutter/src/domain/models/AuthResponse.dart';
+import 'package:indriver_clone_flutter/src/domain/models/ClientRequest.dart';
 import 'package:indriver_clone_flutter/src/domain/models/ClientRequestResponse.dart';
 import 'package:indriver_clone_flutter/src/domain/models/DriverPosition.dart';
+import 'package:indriver_clone_flutter/src/domain/models/DriverTripRequest.dart';
 import 'package:indriver_clone_flutter/src/domain/useCases/auth/AuthUseCase.dart';
 import 'package:indriver_clone_flutter/src/domain/useCases/client-requests/ClientRequestsUseCases.dart';
 import 'package:indriver_clone_flutter/src/domain/useCases/driver-trip-request/DriverTripRequestUseCases.dart';
 import 'package:indriver_clone_flutter/src/domain/useCases/drivers-position/DriversPositionUseCases.dart';
 import 'package:indriver_clone_flutter/src/domain/utils/Resource.dart';
-import 'package:indriver_clone_flutter/src/presentation/pages/driver/clientRequests/bloc/DriverClientRequestsState.dart';
 import 'package:indriver_clone_flutter/src/presentation/pages/driver/clientRequests/bloc/DriverClientRequestsEvent.dart';
+import 'package:indriver_clone_flutter/src/presentation/pages/driver/clientRequests/bloc/DriverClientRequestsState.dart';
+import 'package:indriver_clone_flutter/src/presentation/utils/BlocFormItem.dart';
 
 class DriverClientRequestsBloc extends Bloc<DriverClientRequestsEvent, DriverClientRequestsState> {
 
@@ -16,46 +20,45 @@ class DriverClientRequestsBloc extends Bloc<DriverClientRequestsEvent, DriverCli
   DriversPositionUseCases driversPositionUseCases;
   ClientRequestsUseCases clientRequestsUseCases;
   DriverTripRequestUseCases driverTripRequestUseCases;
+  BlocSocketIO blocSocketIO;
 
+  DriverClientRequestsBloc(this.blocSocketIO, this.clientRequestsUseCases, this.driversPositionUseCases, this.authUseCases, this.driverTripRequestUseCases): super(DriverClientRequestsState()) {
 
-  DriverClientRequestsBloc(this.clientRequestsUseCases, this.driversPositionUseCases, this.authUseCases, this.driverTripRequestUseCases): super(DriverClientRequestsState()) {
+    on<InitDriverClientRequest>((event, emit) async {
+      AuthResponse authResponse = await authUseCases.getUserSession.run();
+      Resource responseDriverPosition = await driversPositionUseCases.getDriverPosition.run(authResponse.user.id!);
+      emit(
+        state.copyWith(
+          response: Loading(),
+          idDriver: authResponse.user.id!,
+          responseDriverPosition: responseDriverPosition
+        )
+      );
+      add(GetNearbyTripRequest());
+    });
 
-
-   on<GetNearbyTripRequest>((event, emit) async {
-  AuthResponse authResponse = await authUseCases.getUserSession.run();
-  Resource driverPositionResponse = await driversPositionUseCases.getDriverPosition.run(authResponse.user.id!);
-  emit(state.copyWith(response: Loading()));
-  
-  if (driverPositionResponse is Success) {
-    DriverPosition? driverPosition = driverPositionResponse.data as DriverPosition?;
-    if (driverPosition != null && driverPosition.lat != null && driverPosition.lng != null) {
-      // Las coordenadas no son nulas, procede con la solicitud de las solicitudes de viaje cercanas
-      print('Driver Position: $driverPosition');
-      Resource<List<ClientRequestResponse>> response = await clientRequestsUseCases.getNearbyTripRequest.run(driverPosition.lat!, driverPosition.lng!);
-      print('Client Requests Response: $response');
-
-      emit(state.copyWith(response: response,
-      idDriver: authResponse.user.id!));
-    } else {
-      // Las coordenadas son nulas, maneja el caso apropiadamente
-      emit(state.copyWith(response: ErrorData('Driver position coordinates are null')));
-    }
-  } else if (driverPositionResponse is Error) {
-    // Manejar el caso de error al obtener la posición del conductor
-    emit(state.copyWith(response: driverPositionResponse));
-  }
-});
-
-
+    on<GetNearbyTripRequest>((event, emit) async{
+      final responseDriverPosition = state.responseDriverPosition;
+      if (responseDriverPosition is Success) {
+        DriverPosition driverPosition = responseDriverPosition.data as DriverPosition;
+        Resource<List<ClientRequestResponse>> response = await clientRequestsUseCases.getNearbyTripRequest.run(driverPosition.lat, driverPosition.lng);
+        emit(
+          state.copyWith(
+            response: response,
+          )
+        );
+      }
+    });
 
     on<CreateDriverTripRequest>((event, emit) async {
       Resource<bool> response = await driverTripRequestUseCases.createDriverTripRequest.run(event.driverTripRequest);
       emit(
         state.copyWith(responseCreateDriverTripRequest: response)
       );
-
+      if (response is Success) {
+        add(EmitNewDriverOfferSocketIO(idClientRequest: event.driverTripRequest.idClientRequest));
+      }
     });
-
 
     on<FareOfferedChange>((event, emit) {
       emit(
@@ -65,7 +68,22 @@ class DriverClientRequestsBloc extends Bloc<DriverClientRequestsEvent, DriverCli
       );
     });
 
-    
+    on<ListenNewClientRequestSocketIO>((event, emit) {
+      if (blocSocketIO.state.socket != null) {
+        blocSocketIO.state.socket?.on('created_client_request', (data) {
+          add(GetNearbyTripRequest());
+        });
+      }
+    });
+
+    on<EmitNewDriverOfferSocketIO>((event, emit) {
+      if (blocSocketIO.state.socket != null) {
+        blocSocketIO.state.socket?.emit('new_driver_offer', {
+          'id_client_request': event.idClientRequest
+        });
+      }
+    });
+
   }
 
 }

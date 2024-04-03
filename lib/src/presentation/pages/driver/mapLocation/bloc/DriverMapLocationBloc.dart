@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:indriver_clone_flutter/blocSocketIO/BlocSocketIO.dart';
 import 'package:indriver_clone_flutter/src/domain/models/AuthResponse.dart';
 import 'package:indriver_clone_flutter/src/domain/models/DriverPosition.dart';
 import 'package:indriver_clone_flutter/src/domain/useCases/auth/AuthUseCase.dart';
@@ -19,8 +20,9 @@ class DriverMapLocationBloc
   AuthUseCases authUseCases;
   DriversPositionUseCases driversPositionUseCases;
   StreamSubscription? positionSubscription;
+  BlocSocketIO blocSocketIO;
 
-  DriverMapLocationBloc(this.geolocatorUseCases, this.socketUseCases, this.authUseCases, this.driversPositionUseCases)
+  DriverMapLocationBloc(this.blocSocketIO,this.geolocatorUseCases, this.socketUseCases, this.authUseCases, this.driversPositionUseCases)
       : super(DriverMapLocationState()) {
       
     on<DriverMapLocationInitEvent>((event, emit) async {
@@ -111,27 +113,10 @@ class DriverMapLocationBloc
       add(DeleteLocationData(idDriver: state.idDriver!));
     });
 
-    on<ConnectSocketIo>((event, emit) {
-      Socket socket =  socketUseCases.connect.run();
-      emit(
-        state.copyWith(
-          socket: socket
-        )
-      );
-    });
-
-    on<DisconnectSocketIo>((event, emit) {
-      Socket socket =  socketUseCases.disconnect.run();
-      emit(
-        state.copyWith(
-          socket: socket
-        )
-      );    
-      });
+  
 
     on<EmitDriverPositionSocketIo>((event, emit) async {
-
-      state.socket?.emit('change_driver_position', {
+      blocSocketIO.state.socket?.emit('change_driver_position', {
         'id': state.idDriver,
         'lat': state.position!.latitude,
         'lng': state.position!.longitude

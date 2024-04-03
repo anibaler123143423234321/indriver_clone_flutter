@@ -2,26 +2,30 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:indriver_clone_flutter/src/domain/models/ClientRequest.dart';
 import 'package:indriver_clone_flutter/src/domain/models/ClientRequestResponse.dart';
 import 'package:indriver_clone_flutter/src/domain/utils/Resource.dart';
 import 'package:indriver_clone_flutter/src/presentation/pages/driver/clientRequests/DriverClientRequestsItem.dart';
-import 'package:indriver_clone_flutter/src/presentation/pages/driver/clientRequests/bloc/DriverClientRequestsState.dart';
 import 'package:indriver_clone_flutter/src/presentation/pages/driver/clientRequests/bloc/DriverClientRequestsBloc.dart';
 import 'package:indriver_clone_flutter/src/presentation/pages/driver/clientRequests/bloc/DriverClientRequestsEvent.dart';
+import 'package:indriver_clone_flutter/src/presentation/pages/driver/clientRequests/bloc/DriverClientRequestsState.dart';
 
 class DriverClientRequestsPage extends StatefulWidget {
   const DriverClientRequestsPage({super.key});
 
   @override
-  State<DriverClientRequestsPage> createState() => _DriverClientRequestState();
+  State<DriverClientRequestsPage> createState() =>
+      _DriverClientRequestsPageState();
 }
 
-class _DriverClientRequestState extends State<DriverClientRequestsPage> {
+class _DriverClientRequestsPageState extends State<DriverClientRequestsPage> {
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      context.read<DriverClientRequestsBloc>().add(GetNearbyTripRequest());
+      context.read<DriverClientRequestsBloc>().add(InitDriverClientRequest());
+      context.read<DriverClientRequestsBloc>().add(ListenNewClientRequestSocketIO());
+      // context.read<DriverClientRequestsBloc>().add(GetNearbyTripRequest());
     });
   }
 
@@ -42,10 +46,9 @@ class _DriverClientRequestState extends State<DriverClientRequestsPage> {
             builder: (context, state) {
           final response = state.response;
           if (response is Loading) {
-            return Center(
-              child: CircularProgressIndicator(),
-            );
-          } else if (response is Success) {
+            return Center(child: CircularProgressIndicator());
+          } 
+          else if (response is Success) {
             List<ClientRequestResponse> clientRequests =
                 response.data as List<ClientRequestResponse>;
             return ListView.builder(

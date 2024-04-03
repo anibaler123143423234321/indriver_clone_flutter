@@ -22,7 +22,7 @@ class DriverTripRequestsService {
       }
       
     } catch (e) {
-      print('Error: $e');
+      print('Error createdrover: $e');
       return ErrorData(e.toString());
     }
   }
@@ -43,7 +43,7 @@ class DriverTripRequestsService {
       }
       
     } catch (e) {
-      print('Error: $e');
+      print('Error getdriver: $e');
       return ErrorData(e.toString());
     }
 

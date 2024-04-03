@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
-      providers: blocProviders,
+      providers: blocProviders, // Usar la lista de blocProviders
       child: MaterialApp(
         builder: FToastBuilder(),
         title: 'Flutter Demo',
@@ -48,3 +48,4 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+

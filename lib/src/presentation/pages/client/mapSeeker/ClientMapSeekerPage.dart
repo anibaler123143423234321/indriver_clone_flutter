@@ -32,7 +32,8 @@ class _ClientMapSeekerPageState extends State<ClientMapSeekerPage> {
     super.initState();
     WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
       context.read<ClientMapSeekerBloc>().add(ClientMapSeekerInitEvent());
-      context.read<ClientMapSeekerBloc>().add(ConnectSocketIO());
+      context.read<ClientMapSeekerBloc>().add(ListenDriversPositionSocketIO());
+      context.read<ClientMapSeekerBloc>().add(ListenDriversDisconnectedSocketIO());
       context.read<ClientMapSeekerBloc>().add(FindPosition());
     });
   }
