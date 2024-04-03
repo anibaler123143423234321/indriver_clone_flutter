@@ -34,6 +34,7 @@ import 'package:indriver_clone_flutter/src/domain/useCases/client-requests/GetNe
 import 'package:indriver_clone_flutter/src/domain/useCases/client-requests/getTimeAndDistanceUseCase.dart';
 import 'package:indriver_clone_flutter/src/domain/useCases/driver-trip-request/CreateDriverTripRequestUseCase.dart';
 import 'package:indriver_clone_flutter/src/domain/useCases/driver-trip-request/DriverTripRequestUseCases.dart';
+import 'package:indriver_clone_flutter/src/domain/useCases/driver-trip-request/GetDriverTripOffersByClientRequestUseCase.dart';
 import 'package:indriver_clone_flutter/src/domain/useCases/drivers-position/CreateDriverPositionUseCase.dart';
 import 'package:indriver_clone_flutter/src/domain/useCases/drivers-position/DeleteDriverPositionUseCase.dart';
 import 'package:indriver_clone_flutter/src/domain/useCases/drivers-position/DriversPositionUseCases.dart';
@@ -168,7 +169,9 @@ abstract class AppModule{
 
      @injectable
    DriverTripRequestUseCases get driverTriRequestsUseCases => DriverTripRequestUseCases(
-    createDriverTripRequest: CreateDriverTripRequestUseCase(driverTriRequestsRepository)
+    createDriverTripRequest: CreateDriverTripRequestUseCase(driverTriRequestsRepository),
+    getDriverTripOffersByClientRequest: GetDriverTripOffersByClientRequestUseCase(driverTriRequestsRepository)
+
   );
 
   

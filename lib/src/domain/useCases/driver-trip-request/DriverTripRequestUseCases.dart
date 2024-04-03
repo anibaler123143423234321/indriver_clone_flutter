@@ -4,11 +4,11 @@ import 'package:indriver_clone_flutter/src/domain/useCases/driver-trip-request/G
 class DriverTripRequestUseCases {
 
   CreateDriverTripRequestUseCase createDriverTripRequest;
-  //GetDriverTripOffersByClientRequestUseCase getDriverTripOffersByClientRequest;
+  GetDriverTripOffersByClientRequestUseCase getDriverTripOffersByClientRequest;
 
   DriverTripRequestUseCases({
     required this.createDriverTripRequest,
-    //required this.getDriverTripOffersByClientRequest,
+    required this.getDriverTripOffersByClientRequest,
   });
 
 }

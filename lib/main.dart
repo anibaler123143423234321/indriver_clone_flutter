@@ -5,6 +5,7 @@ import 'package:indriver_clone_flutter/blocProviders.dart';
 import 'package:indriver_clone_flutter/injection.dart';
 import 'package:indriver_clone_flutter/src/presentation/pages/auth/login/LoginPage.dart';
 import 'package:indriver_clone_flutter/src/presentation/pages/auth/register/RegisterPage.dart';
+import 'package:indriver_clone_flutter/src/presentation/pages/client/driverOffers/ClientDriverOffersPage.dart';
 import 'package:indriver_clone_flutter/src/presentation/pages/client/home/ClientHomePage.dart';
 import 'package:indriver_clone_flutter/src/presentation/pages/client/mapBookingInfo/ClientMapBookingInfoPage.dart';
 import 'package:indriver_clone_flutter/src/presentation/pages/driver/home/DriverHomePage.dart';
@@ -41,6 +42,7 @@ class MyApp extends StatelessWidget {
           'driver/home': (BuildContext context) => DriverHomePage(),
           'client/map/booking/': (BuildContext context) => ClientMapBookingInfoPage(),
           'profile/update': (BuildContext context) => ProfileUpdatePage(),
+          'client/driver/offers': (BuildContext context) => ClientDriverOffersPage(),
         },
       ),
     );

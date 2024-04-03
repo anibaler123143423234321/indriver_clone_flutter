@@ -56,6 +56,7 @@ class _ClientMapBookingInfoPageState extends State<ClientMapBookingInfoPage> {
       listener: (context, state) {
         final responseClientRequest = state.responseClientRequest;
             if (responseClientRequest is Success) {
+              Navigator.pushNamedAndRemoveUntil(context, 'client/driver/offers', (route) => false);
             Fluttertoast.showToast(msg: 'Solicitud enviada', toastLength: Toast.LENGTH_LONG);
           }
       },
