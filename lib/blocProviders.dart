@@ -2,6 +2,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:indriver_clone_flutter/injection.dart';
 import 'package:indriver_clone_flutter/src/domain/useCases/auth/AuthUseCase.dart';
 import 'package:indriver_clone_flutter/src/domain/useCases/client-requests/ClientRequestsUseCases.dart';
+import 'package:indriver_clone_flutter/src/domain/useCases/driver-trip-request/DriverTripRequestUseCases.dart';
 import 'package:indriver_clone_flutter/src/domain/useCases/drivers-position/DriversPositionUseCases.dart';
 import 'package:indriver_clone_flutter/src/domain/useCases/geolocator/GeolocatorUseCases.dart';
 import 'package:indriver_clone_flutter/src/domain/useCases/socket/SocketUseCases.dart';
@@ -34,6 +35,6 @@ List<BlocProvider> blocProviders = [
   BlocProvider<ClientMapSeekerBloc>(create: (context) => ClientMapSeekerBloc(locator<GeolocatorUseCases>(),locator<SocketUseCases>())),
   BlocProvider<ClientMapBookingInfoBloc>(create: (context) => ClientMapBookingInfoBloc(locator<GeolocatorUseCases>(),locator<ClientRequestsUseCases>(),locator<AuthUseCases>())),
   BlocProvider<DriverMapLocationBloc>(create: (context) => DriverMapLocationBloc(locator<GeolocatorUseCases>(), locator<SocketUseCases>(),locator<AuthUseCases>(),locator<DriversPositionUseCases>())),
-  BlocProvider<DriverClientRequestsBloc>(create: (context) => DriverClientRequestsBloc(locator<ClientRequestsUseCases>(),locator<DriversPositionUseCases>(),locator<AuthUseCases>())),
+  BlocProvider<DriverClientRequestsBloc>(create: (context) => DriverClientRequestsBloc(locator<ClientRequestsUseCases>(),locator<DriversPositionUseCases>(),locator<AuthUseCases>(),locator<DriverTripRequestUseCases>())),
 
 ];

@@ -17,7 +17,6 @@ class DriverTripRequest {
     DateTime? createdAt;
     DateTime? updatedAt;
     User? driver;
-    DriverCarInfo? car;
     
     DriverTripRequest({
         this.id,
@@ -29,7 +28,6 @@ class DriverTripRequest {
         this.createdAt,
         this.updatedAt,
         this.driver,
-        this.car
     });
 
     factory DriverTripRequest.fromJson(Map<String, dynamic> json) => DriverTripRequest(
@@ -42,7 +40,6 @@ class DriverTripRequest {
         createdAt: DateTime.parse(json["created_at"]),
         updatedAt: DateTime.parse(json["updated_at"]),
         driver: User.fromJson(json["driver"]),
-        car: DriverCarInfo.fromJson(json["car"]),
     );
 
     static List<DriverTripRequest> fromJsonList(List<dynamic> jsonList) {

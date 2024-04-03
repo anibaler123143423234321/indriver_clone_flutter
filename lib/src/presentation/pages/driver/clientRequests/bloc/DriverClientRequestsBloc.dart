@@ -4,6 +4,7 @@ import 'package:indriver_clone_flutter/src/domain/models/ClientRequestResponse.d
 import 'package:indriver_clone_flutter/src/domain/models/DriverPosition.dart';
 import 'package:indriver_clone_flutter/src/domain/useCases/auth/AuthUseCase.dart';
 import 'package:indriver_clone_flutter/src/domain/useCases/client-requests/ClientRequestsUseCases.dart';
+import 'package:indriver_clone_flutter/src/domain/useCases/driver-trip-request/DriverTripRequestUseCases.dart';
 import 'package:indriver_clone_flutter/src/domain/useCases/drivers-position/DriversPositionUseCases.dart';
 import 'package:indriver_clone_flutter/src/domain/utils/Resource.dart';
 import 'package:indriver_clone_flutter/src/presentation/pages/driver/clientRequests/bloc/DriverClientRequestsState.dart';
@@ -14,8 +15,10 @@ class DriverClientRequestsBloc extends Bloc<DriverClientRequestsEvent, DriverCli
   AuthUseCases authUseCases;
   DriversPositionUseCases driversPositionUseCases;
   ClientRequestsUseCases clientRequestsUseCases;
+  DriverTripRequestUseCases driverTripRequestUseCases;
 
-  DriverClientRequestsBloc(this.clientRequestsUseCases, this.driversPositionUseCases, this.authUseCases): super(DriverClientRequestsState()) {
+
+  DriverClientRequestsBloc(this.clientRequestsUseCases, this.driversPositionUseCases, this.authUseCases, this.driverTripRequestUseCases): super(DriverClientRequestsState()) {
 
 
    on<GetNearbyTripRequest>((event, emit) async {
@@ -31,7 +34,8 @@ class DriverClientRequestsBloc extends Bloc<DriverClientRequestsEvent, DriverCli
       Resource<List<ClientRequestResponse>> response = await clientRequestsUseCases.getNearbyTripRequest.run(driverPosition.lat!, driverPosition.lng!);
       print('Client Requests Response: $response');
 
-      emit(state.copyWith(response: response));
+      emit(state.copyWith(response: response,
+      idDriver: authResponse.user.id!));
     } else {
       // Las coordenadas son nulas, maneja el caso apropiadamente
       emit(state.copyWith(response: ErrorData('Driver position coordinates are null')));
@@ -42,6 +46,26 @@ class DriverClientRequestsBloc extends Bloc<DriverClientRequestsEvent, DriverCli
   }
 });
 
+
+
+    on<CreateDriverTripRequest>((event, emit) async {
+      Resource<bool> response = await driverTripRequestUseCases.createDriverTripRequest.run(event.driverTripRequest);
+      emit(
+        state.copyWith(responseCreateDriverTripRequest: response)
+      );
+
+    });
+
+
+    on<FareOfferedChange>((event, emit) {
+      emit(
+        state.copyWith(
+          fareOffered: event.fareOffered
+        )
+      );
+    });
+
+    
   }
 
 }
