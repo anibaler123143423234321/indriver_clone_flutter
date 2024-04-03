@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:indriver_clone_flutter/src/domain/models/TimeAndDistanceValues.dart';
+import 'package:indriver_clone_flutter/src/presentation/pages/client/mapBookingInfo/bloc/ClientMapBookingInfoBloc.dart';
+import 'package:indriver_clone_flutter/src/presentation/pages/client/mapBookingInfo/bloc/ClientMapBookingInfoEvent.dart';
 import 'package:indriver_clone_flutter/src/presentation/pages/client/mapBookingInfo/bloc/ClientMapBookingInfoState.dart';
+import 'package:indriver_clone_flutter/src/presentation/utils/BlocFormItem.dart';
 import 'package:indriver_clone_flutter/src/presentation/widgets/DefaultIconBack.dart';
 import 'package:indriver_clone_flutter/src/presentation/widgets/DefaultTextField.dart';
 
@@ -116,17 +120,17 @@ class ClientMapBookingInfoContent extends StatelessWidget {
             icon: Icons.attach_money, 
             keyboardType: TextInputType.phone,
             onChanged: (text) {
-             // context.read<ClientMapBookingInfoBloc>().add(FareOfferedChanged(fareOffered: BlocFormItem(value: text)));
+             context.read<ClientMapBookingInfoBloc>().add(FareOfferedChanged(fareOffered: BlocFormItem(value: text)));
             },
             validator: (value) {
-              //return state.fareOffered.error;
+              return state.fareOffered.error;
             },
           ),
           _actionProfile(
             'BUSCAR CONDUCTOR',
             Icons.search,
             () {
-           //   context.read<ClientMapBookingInfoBloc>().add(CreateClientRequest());
+             context.read<ClientMapBookingInfoBloc>().add(CreateClientRequest());
             }
           )
         ],

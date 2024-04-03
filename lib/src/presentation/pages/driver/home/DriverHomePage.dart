@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:indriver_clone_flutter/main.dart';
-import 'package:indriver_clone_flutter/src/presentation/pages/client/mapSeeker/ClientMapSeekerPage.dart';
+import 'package:indriver_clone_flutter/src/presentation/pages/driver/clientRequests/DriverClientRequestsPage.dart';
 import 'package:indriver_clone_flutter/src/presentation/pages/driver/home/bloc/DriverHomeBloc.dart';
 import 'package:indriver_clone_flutter/src/presentation/pages/driver/home/bloc/DriverHomeState.dart';
 import 'package:indriver_clone_flutter/src/presentation/pages/driver/home/bloc/DriverHomeEvent.dart';
@@ -19,6 +19,7 @@ class DriverHomePage extends StatefulWidget {
 class _DriverHomePageState extends State<DriverHomePage> {
   final List<Widget> pageList = [
     DriverMapLocationPage(),
+    DriverClientRequestsPage(),
     ProfileInfoPage(),
     RolesPage(),
   ];
@@ -65,8 +66,9 @@ class _DriverHomePageState extends State<DriverHomePage> {
                     Navigator.pop(context);
                   },
                 ),
+                
                 ListTile(
-                  title: const Text('Perfil del usuario'),
+                  title: const Text('Solicitudes de Viaje'),
                   selected: state.pageIndex == 1,
                   onTap: () {
                     context.read<DriverHomeBloc>().add(ChangeDrawerPage(pageIndex: 1));
@@ -74,10 +76,18 @@ class _DriverHomePageState extends State<DriverHomePage> {
                   },
                 ),
                 ListTile(
-                  title: const Text('Roles de usuario'),
+                  title: const Text('Perfil del usuario'),
                   selected: state.pageIndex == 2,
                   onTap: () {
                     context.read<DriverHomeBloc>().add(ChangeDrawerPage(pageIndex: 2));
+                    Navigator.pop(context);
+                  },
+                ),
+                ListTile(
+                  title: const Text('Roles de usuario'),
+                  selected: state.pageIndex == 3,
+                  onTap: () {
+                    context.read<DriverHomeBloc>().add(ChangeDrawerPage(pageIndex: 3));
                     Navigator.pop(context);
                   },
                 ),

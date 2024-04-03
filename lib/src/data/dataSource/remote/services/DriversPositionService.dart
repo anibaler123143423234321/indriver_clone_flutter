@@ -8,34 +8,36 @@ import 'package:indriver_clone_flutter/src/domain/utils/Resource.dart';
 class DriversPositionService {
 
    Future<Resource<bool>> create(DriverPosition driverPosition) async {
-
-    try {
-      Uri url = Uri.http(ApiConfig.API_PROJECT, '/drivers-position');
-      Map<String, String> headers = { 'Content-Type': 'application/json' };
-      String body = json.encode(driverPosition);
-      final response = await http.post(url, headers: headers, body: body);
-      final data = json.decode(response.body);
-      if (response.statusCode == 200 || response.statusCode == 201) {
-        return Success(true);
+      try {
+         Uri url = Uri.http(ApiConfig.API_PROJECT, '/drivers-position');
+         Map<String, String> headers = { 'Content-Type': 'application/json' };
+         String body = json.encode(driverPosition);
+         final response = await http.post(url, headers: headers, body: body);
+         final data = json.decode(response.body);
+         if (response.statusCode == 200 || response.statusCode == 201) {
+            return Success(true);
+         }
+         else {
+            return ErrorData(listToString(data['message']));
+         }
+      } catch (e) {
+         print('Error drivers-position: $e');
+         return ErrorData(e.toString());
       }
-      else {
-        return ErrorData(listToString(data['message']));
-      }
-      
-    } catch (e) {
-      print('Error: $e');
-      return ErrorData(e.toString());
-    }
-
    }
 
-   Future<Resource<DriverPosition>> getDriverPosition(int idDriver) async {
 
-    try {
-      Uri url = Uri.http(ApiConfig.API_PROJECT, '/drivers-position/${idDriver}');
-      Map<String, String> headers = { 'Content-Type': 'application/json' };
-      final response = await http.get(url, headers: headers);
-      final data = json.decode(response.body);
+
+
+
+
+   Future<Resource<DriverPosition>> getDriverPosition(int idDriver) async {
+   try {
+  Uri url = Uri.http(ApiConfig.API_PROJECT, '/drivers-position/${idDriver}');
+  Map<String, String> headers = { 'Content-Type': 'application/json' };
+  final response = await http.get(url, headers: headers);
+  print('Response from server: ${response.body}'); // Agrega esta línea para imprimir la respuesta
+  final data = json.decode(response.body);
       if (response.statusCode == 200 || response.statusCode == 201) {
         DriverPosition driverPosition = DriverPosition.fromJson(data);
         return Success(driverPosition);
@@ -45,11 +47,14 @@ class DriversPositionService {
       }
       
     } catch (e) {
-      print('Error: $e');
+      print('Error drivers-position-get: $e');
       return ErrorData(e.toString());
     }
-
    }
+
+
+
+
 
    Future<Resource<bool>> delete(int idDriver) async {
 

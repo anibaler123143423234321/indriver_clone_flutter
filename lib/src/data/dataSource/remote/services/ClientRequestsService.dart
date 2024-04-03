@@ -10,7 +10,7 @@ import 'package:indriver_clone_flutter/src/domain/utils/Resource.dart';
 import 'package:http/http.dart' as http;
 class ClientRequestsService {
 
-  Future<Resource<int>> create(ClientRequest clientRequest) async {
+  Future<Resource<bool>> create(ClientRequest clientRequest) async {
 
     try {
       Uri url = Uri.http(ApiConfig.API_PROJECT, '/client-requests');
@@ -154,27 +154,30 @@ class ClientRequestsService {
 
   }
 
-  Future<Resource<List<ClientRequestResponse>>> getNearbyTripRequest(double driverLat, double driverLng) async {
+ Future<Resource<List<ClientRequestResponse>>> getNearbyTripRequest(double driverLat, double driverLng) async {
 
-    try {
-      Uri url = Uri.http(ApiConfig.API_PROJECT, '/client-requests/${driverLat}/${driverLng}');
-      Map<String, String> headers = { 'Content-Type': 'application/json' };
-      final response = await http.get(url, headers: headers);
-      final data = json.decode(response.body);
-      if (response.statusCode == 200 || response.statusCode == 201) {
-        List<ClientRequestResponse> clientRequests = ClientRequestResponse.fromJsonList(data);
-        return Success(clientRequests);
-      }
-      else {
-        return ErrorData(listToString(data['message']));
-      }
-      
-    } catch (e) {
-      print('Error: $e');
-      return ErrorData(e.toString());
+  try {
+    Uri url = Uri.http(ApiConfig.API_PROJECT, '/client-requests/${driverLat}/${driverLng}');
+    Map<String, String> headers = { 'Content-Type': 'application/json' };
+    final response = await http.get(url, headers: headers);
+    final data = json.decode(response.body);
+    print('Request to server: GET $url'); // Agregar esta línea para imprimir la solicitud al servidor
+    print('Response from server: $data'); // Agrega esta línea para imprimir la respuesta del servidor
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      List<ClientRequestResponse> clientRequests = ClientRequestResponse.fromJsonList(data);
+      return Success(clientRequests);
     }
-
+    else {
+      return ErrorData(listToString(data['message']));
+    }
+    
+  } catch (e) {
+    print('Error: $e');
+    return ErrorData(e.toString());
   }
+
+}
+
 
   Future<Resource<List<ClientRequestResponse>>> getByDriverAssigned(int idDriver) async {
     try {

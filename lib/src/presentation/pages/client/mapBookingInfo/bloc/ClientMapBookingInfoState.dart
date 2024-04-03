@@ -20,8 +20,8 @@ class ClientMapBookingInfoState extends Equatable {
   final String pickUpDescription;
   final String destinationDescription;
   final Resource? responseTimeAndDistance;
-  //final Resource? responseClientRequest;
-  //final BlocFormItem fareOffered;
+  final Resource? responseClientRequest;
+  final BlocFormItem fareOffered;
   
 
   ClientMapBookingInfoState({
@@ -35,8 +35,8 @@ class ClientMapBookingInfoState extends Equatable {
     this.markers = const <MarkerId, Marker>{},
     this.polylines = const <PolylineId, Polyline>{},
     this.responseTimeAndDistance,
-    //this.responseClientRequest,
-    //this.fareOffered = const BlocFormItem(error: 'Ingresa la tarifa')
+    this.responseClientRequest,
+    this.fareOffered = const BlocFormItem(error: 'Ingresa la tarifa')
   });
 
   ClientMapBookingInfoState copyWith({
@@ -50,8 +50,8 @@ class ClientMapBookingInfoState extends Equatable {
     Map<MarkerId, Marker>? markers,
     Map<PolylineId, Polyline>? polylines,
     Resource? responseTimeAndDistance,
-    //Resource? responseClientRequest,
-    //BlocFormItem? fareOffered
+    Resource? responseClientRequest,
+    BlocFormItem? fareOffered
   }) {
     return ClientMapBookingInfoState(
       position: position ?? this.position,
@@ -64,13 +64,13 @@ class ClientMapBookingInfoState extends Equatable {
       pickUpDescription: pickUpDescription ?? this.pickUpDescription,
       destinationDescription: destinationDescription ?? this.destinationDescription,
       responseTimeAndDistance: responseTimeAndDistance ?? this.responseTimeAndDistance,
-      //responseClientRequest: responseClientRequest,
-      //fareOffered: fareOffered ?? this.fareOffered
+      responseClientRequest: responseClientRequest,
+      fareOffered: fareOffered ?? this.fareOffered
     );
   }
 
 
   @override
-  List<Object?> get props => [position, markers, polylines, controller, cameraPosition, pickUpLatLng, destinationLatLng, pickUpDescription, destinationDescription, responseTimeAndDistance];
+  List<Object?> get props => [position, markers, polylines, controller, cameraPosition, pickUpLatLng, destinationLatLng, pickUpDescription, destinationDescription, responseTimeAndDistance, responseClientRequest,fareOffered];
 
 }

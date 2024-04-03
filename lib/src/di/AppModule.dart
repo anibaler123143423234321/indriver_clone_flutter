@@ -26,6 +26,8 @@ import 'package:indriver_clone_flutter/src/domain/useCases/auth/LogoutUseCase.da
 import 'package:indriver_clone_flutter/src/domain/useCases/auth/RegisterUseCase.dart';
 import 'package:indriver_clone_flutter/src/domain/useCases/auth/SaveUserSessionUseCase.dart';
 import 'package:indriver_clone_flutter/src/domain/useCases/client-requests/ClientRequestsUseCases.dart';
+import 'package:indriver_clone_flutter/src/domain/useCases/client-requests/CreateClientRequestUseCase.dart';
+import 'package:indriver_clone_flutter/src/domain/useCases/client-requests/GetNearbyTripRequestUseCase.dart';
 import 'package:indriver_clone_flutter/src/domain/useCases/client-requests/getTimeAndDistanceUseCase.dart';
 import 'package:indriver_clone_flutter/src/domain/useCases/drivers-position/CreateDriverPositionUseCase.dart';
 import 'package:indriver_clone_flutter/src/domain/useCases/drivers-position/DeleteDriverPositionUseCase.dart';
@@ -148,8 +150,9 @@ abstract class AppModule{
 
    @injectable
    ClientRequestsUseCases get clientRequestsUseCases => ClientRequestsUseCases(
+    createClientRequest: CreateClientRequestUseCase(clientRequestsRepository),
     getTimeAndDistance: GetTimeAndDistanceUseCase(clientRequestsRepository),
-
+    getNearbyTripRequest: GetNearbyTripRequestUseCase(clientRequestsRepository)
   );
   
 }

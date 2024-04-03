@@ -42,6 +42,7 @@ class DriverMapLocationBloc
       Stream<Position> positionStream = geolocatorUseCases.getPositionStream.run();
       positionSubscription = positionStream.listen((Position position) {
         add(UpdateLocation(position: position));
+        
         add(SaveLocationData(driverPosition: DriverPosition(
           idDriver: state.idDriver!,
           lat: position.latitude,
@@ -95,9 +96,11 @@ class DriverMapLocationBloc
     on<UpdateLocation>((event, emit) async {
       add(AddMyPositionMarker(lat: event.position.latitude, lng: event.position.longitude));
       add(ChangeMapCameraPosition(lat: event.position.latitude, lng: event.position.longitude));
+            print('Updating location - Latitude: ${event.position.latitude}, Longitude: ${event.position.longitude}');
       emit(
         state.copyWith(
           position: event.position
+          
         )
       );
       add(EmitDriverPositionSocketIo());

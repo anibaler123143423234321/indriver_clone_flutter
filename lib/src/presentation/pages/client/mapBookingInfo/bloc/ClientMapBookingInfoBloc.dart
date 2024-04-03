@@ -2,7 +2,10 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:indriver_clone_flutter/src/domain/models/AuthResponse.dart';
+import 'package:indriver_clone_flutter/src/domain/models/ClientRequest.dart';
 import 'package:indriver_clone_flutter/src/domain/models/TimeAndDistanceValues.dart';
+import 'package:indriver_clone_flutter/src/domain/useCases/auth/AuthUseCase.dart';
 import 'package:indriver_clone_flutter/src/domain/useCases/client-requests/ClientRequestsUseCases.dart';
 import 'package:indriver_clone_flutter/src/domain/useCases/geolocator/GeolocatorUseCases.dart';
 import 'package:indriver_clone_flutter/src/domain/utils/Resource.dart';
@@ -15,8 +18,10 @@ class ClientMapBookingInfoBloc extends Bloc<ClientMapBookingInfoEvent, ClientMap
 
   GeolocatorUseCases geolocatorUseCases;
   ClientRequestsUseCases clientRequestsUseCases;
+  AuthUseCases authUseCases;
 
-  ClientMapBookingInfoBloc(this.geolocatorUseCases, this.clientRequestsUseCases): super(ClientMapBookingInfoState()) {
+
+  ClientMapBookingInfoBloc(this.geolocatorUseCases, this.clientRequestsUseCases, this.authUseCases): super(ClientMapBookingInfoState()) {
     on<ClientMapBookingInfoInitEvent>((event, emit) async {
       Completer<GoogleMapController> controller = Completer<GoogleMapController>();
       emit(
@@ -66,7 +71,8 @@ class ClientMapBookingInfoBloc extends Bloc<ClientMapBookingInfoEvent, ClientMap
         )
       ));
     });  
-/*
+
+
     on<FareOfferedChanged>((event, emit) {
       emit(
         state.copyWith(fareOffered: BlocFormItem(
@@ -75,7 +81,29 @@ class ClientMapBookingInfoBloc extends Bloc<ClientMapBookingInfoEvent, ClientMap
         ))
       );
     });
-*/
+
+    on<CreateClientRequest>((event, emit) async {
+      AuthResponse authResponse = await authUseCases.getUserSession.run();
+      Resource<bool> response = await clientRequestsUseCases.createClientRequest.run(
+        ClientRequest(
+          idClient: authResponse.user.id!, 
+          fareOffered: double.parse(state.fareOffered.value), 
+          pickupDescription: state.pickUpDescription, 
+          destinationDescription: state.destinationDescription, 
+          pickupLat: state.pickUpLatLng!.latitude, 
+          pickupLng: state.pickUpLatLng!.longitude, 
+          destinationLat: state.destinationLatLng!.latitude, 
+          destinationLng: state.destinationLatLng!.longitude
+        )
+      );
+
+      emit(
+        state.copyWith(
+          responseClientRequest: response
+        )
+      );
+    });
+
 
     on<GetTimeAndDistanceValues>((event, emit) async {
         emit(

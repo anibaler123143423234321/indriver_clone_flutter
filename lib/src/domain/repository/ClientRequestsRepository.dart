@@ -13,7 +13,7 @@ abstract class ClientRequestsRepository {
     double destinationLng,
   );
 
-  Future<Resource<int>> create(ClientRequest clientRequest);
+  Future<Resource<bool>> create(ClientRequest clientRequest);
   Future<Resource<bool>> updateStatus(int idClientRequest, StatusTrip statusTrip);
   Future<Resource<bool>> updateDriverRating(int idClientRequest, double rating);
   Future<Resource<bool>> updateClientRating(int idClientRequest, double rating);
