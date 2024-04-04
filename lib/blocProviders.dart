@@ -27,7 +27,7 @@ import 'package:indriver_clone_flutter/src/presentation/pages/roles/bloc/RolesBl
 import 'package:indriver_clone_flutter/src/presentation/pages/roles/bloc/RolesEvent.dart';
 
 List<BlocProvider> blocProviders = [
-  BlocProvider<LoginBloc>(create: (context) => LoginBloc(locator<AuthUseCases>())..add(LoginInitEvent())),
+  BlocProvider<LoginBloc>(create: (context) => LoginBloc(locator<AuthUseCases>(), locator<UsersUseCases>())..add(LoginInitEvent())),
   BlocProvider<RegisterBloc>(create: (context) => RegisterBloc(locator<AuthUseCases>())..add(RegisterInitEvent())),
   BlocProvider<BlocSocketIO>(create: (context) => BlocSocketIO(locator<SocketUseCases>(), locator<AuthUseCases>())),
   BlocProvider<ClientHomeBloc>(create: (context) => ClientHomeBloc(locator<AuthUseCases>())),

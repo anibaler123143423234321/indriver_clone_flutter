@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "375854632042",
+    "project_id": "appuber-fb818",
+    "storage_bucket": "appuber-fb818.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:375854632042:android:b80cf99350211d033d4e13",
+        "android_client_info": {
+          "package_name": "com.example.indriver_clone_flutter"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDxZz8AONfuuurHN1KJoh4d9bo1NWJlslg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

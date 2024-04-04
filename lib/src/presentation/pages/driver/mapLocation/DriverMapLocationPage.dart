@@ -8,9 +8,11 @@ import 'package:indriver_clone_flutter/src/presentation/pages/driver/mapLocation
 import 'package:indriver_clone_flutter/src/presentation/pages/driver/mapLocation/bloc/DriverMapLocationBloc.dart';
 import 'package:indriver_clone_flutter/src/presentation/pages/driver/mapLocation/bloc/DriverMapLocationState.dart';
 import 'package:indriver_clone_flutter/src/presentation/widgets/DefaultButton.dart';
+import 'package:toggle_switch/toggle_switch.dart';
+
 
 class DriverMapLocationPage extends StatefulWidget {
-  const DriverMapLocationPage({Key? key}) : super(key: key);
+  const DriverMapLocationPage({super.key});
 
   @override
   State<DriverMapLocationPage> createState() => _DriverMapLocationPageState();
@@ -27,7 +29,6 @@ class _DriverMapLocationPageState extends State<DriverMapLocationPage> {
       context.read<DriverMapLocationBloc>().add(FindPosition());
     });
   }
-
 
 
   @override
@@ -53,20 +54,48 @@ class _DriverMapLocationPageState extends State<DriverMapLocationPage> {
               Container(
                 alignment: Alignment.bottomCenter,
                 margin: EdgeInsets.only(bottom: 30),
-                child: DefaultButton(
-                  text: 'DETENER LOCALIZACION', 
-                  margin: EdgeInsets.only(left: 50, right: 50, bottom: 50),
-                  onPressed: () {
-                    context.read<BlocSocketIO>().add(DisconnectSocketIO());
-                    context.read<DriverMapLocationBloc>().add(StopLocation());
+                child: ToggleSwitch(
+                  minWidth: 130.0,
+                  minHeight: 50,
+                  cornerRadius: 20.0,
+                  activeBgColors: [[Colors.yellow], [Colors.red]],
+                  activeFgColor: Colors.white,
+                  inactiveBgColor: Colors.grey[400],
+                  inactiveFgColor: Colors.white,
+                  initialLabelIndex: 0,
+                  totalSwitches: 2,
+                  customTextStyles: [ TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.bold, fontStyle: FontStyle.italic) ],
+                  labels: ['Conectado', 'Desconectado'],
+                  radiusStyle: true,
+                  onToggle: (index) {
+                    if (index == 0) { //CONECTADO
+                      context.read<BlocSocketIO>().add(ConnectSocketIO());
+                      context.read<DriverMapLocationBloc>().add(FindPosition());
+                    }
+                    else if (index == 1) { // DESCONECTADO
+                      context.read<BlocSocketIO>().add(DisconnectSocketIO());
+                      context.read<DriverMapLocationBloc>().add(StopLocation());
+                    }
+                    print('switched to: $index');
                   },
                 ),
-              ),
+              )
+              // Container(
+              //   alignment: Alignment.bottomCenter,
+              //   child: DefaultButton(
+              //     text: 'DETENER LOCALIZACION', 
+              //     margin: EdgeInsets.only(left: 50, right: 50, bottom: 50),
+              //     onPressed: () {
+              //       context.read<BlocSocketIO>().add(DisconnectSocketIO());
+              //       context.read<DriverMapLocationBloc>().add(StopLocation());
+              //     }
+              //   ),
+              // )
             ],
           );
         },
       ),
     );
   }
-}
 
+}

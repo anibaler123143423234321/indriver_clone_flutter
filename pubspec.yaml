@@ -46,12 +46,18 @@ dependencies:
   path: ^1.8.3
   http_parser: ^4.0.2
   google_maps_flutter: ^2.5.3
-  geolocator: ^10.1.1
+  geolocator: ^11.0.0
   google_places_flutter: ^2.0.8
-  geocoding: ^2.1.1
+  geocoding: ^3.0.0
   flutter_polyline_points: ^2.0.0
   socket_io_client: ^2.0.3+1
-
+  firebase_core: ^2.28.0
+  firebase_messaging: ^14.8.0
+  flutter_local_notifications: ^17.0.0
+  modal_bottom_sheet: ^3.0.0
+  lottie: ^3.1.0
+  toggle_switch: ^2.3.0
+  
 dev_dependencies:
   flutter_test:
     sdk: flutter

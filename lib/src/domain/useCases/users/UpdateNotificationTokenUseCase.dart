@@ -6,6 +6,6 @@ class UpdateNotificationTokenUseCase {
 
   UpdateNotificationTokenUseCase(this.usersRepository);
 
-  //run(int id, String notificationToken) => usersRepository.updateNotificationToken(id, notificationToken);
+  run(int id, String notificationToken) => usersRepository.updateNotificationToken(id, notificationToken);
 
 }

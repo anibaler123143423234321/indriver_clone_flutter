@@ -49,6 +49,7 @@ import 'package:indriver_clone_flutter/src/domain/useCases/geolocator/GetPositio
 import 'package:indriver_clone_flutter/src/domain/useCases/socket/ConnectSocketUseCase.dart';
 import 'package:indriver_clone_flutter/src/domain/useCases/socket/DisconnectSocketUseCase.dart';
 import 'package:indriver_clone_flutter/src/domain/useCases/socket/SocketUseCases.dart';
+import 'package:indriver_clone_flutter/src/domain/useCases/users/UpdateNotificationTokenUseCase.dart';
 import 'package:indriver_clone_flutter/src/domain/useCases/users/UpdateUserUseCase.dart';
 import 'package:indriver_clone_flutter/src/domain/useCases/users/UsersUseCases.dart';
 import 'package:injectable/injectable.dart';
@@ -131,7 +132,9 @@ abstract class AppModule{
 
   @injectable
   UsersUseCases get useruseCases => UsersUseCases(
-    update: UpdateUserUseCase(usersRepository)
+    update: UpdateUserUseCase(usersRepository),
+    updateNotificationToken: UpdateNotificationTokenUseCase(usersRepository)
+
   );
 
   @injectable

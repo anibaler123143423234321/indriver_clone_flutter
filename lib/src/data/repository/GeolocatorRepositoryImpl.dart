@@ -81,23 +81,24 @@ class GeolocatorRepositoryImpl implements GeolocatorRepository {
     }
   }
 
-  @override
-  Future<List<LatLng>> getPolyline(
-      LatLng pickUpLatLng, LatLng destinationLatLng) async {
-    PolylineResult result = await PolylinePoints().getRouteBetweenCoordinates(
-        API_KEY_GOOGLE,
-        PointLatLng(pickUpLatLng.latitude, pickUpLatLng.longitude),
-        PointLatLng(destinationLatLng.latitude, destinationLatLng.longitude),
-        travelMode: TravelMode.driving,
-        wayPoints: [PolylineWayPoint(location: "Ferreñafe, Peru")]);
-    List<LatLng> polylineCoordinates = [];
-    if (result.points.isNotEmpty) {
-      result.points.forEach((PointLatLng point) {
-        polylineCoordinates.add(LatLng(point.latitude, point.longitude));
-      });
-    }
-    return polylineCoordinates;
+@override
+Future<List<LatLng>> getPolyline(
+    LatLng pickUpLatLng, LatLng destinationLatLng) async {
+  PolylineResult result = await PolylinePoints().getRouteBetweenCoordinates(
+      API_KEY_GOOGLE,
+      PointLatLng(pickUpLatLng.latitude, pickUpLatLng.longitude),
+      PointLatLng(destinationLatLng.latitude, destinationLatLng.longitude),
+      travelMode: TravelMode.driving,
+      wayPoints: []); // No proporcionar puntos intermedios
+  List<LatLng> polylineCoordinates = [];
+  if (result.points.isNotEmpty) {
+    result.points.forEach((PointLatLng point) {
+      polylineCoordinates.add(LatLng(point.latitude, point.longitude));
+    });
   }
+  return polylineCoordinates;
+}
+
 
   @override
   Stream<Position> getPositionStream() {

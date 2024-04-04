@@ -109,7 +109,7 @@ class ClientMapBookingInfoBloc extends Bloc<ClientMapBookingInfoEvent, ClientMap
     on<EmitNewClientRequestSocketIO>((event, emit) {
       if (blocSocketIO.state.socket != null) {
         blocSocketIO.state.socket?.emit('new_client_request', {
-            'id_client_request': 5
+            'id_client_request': event.idClientRequest
         });
       }
     });
