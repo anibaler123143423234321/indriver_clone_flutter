@@ -41,8 +41,32 @@ class UsersService {
     }
   }
 
+  Future<Resource<User>> updateNotificationToken(int id, String notificationToken) async {
+    try {
+      Uri url = Uri.http(ApiConfig.API_PROJECT, '/users/notification_token/$id');
+      Map<String, String> headers = {
+        'Content-Type': 'application/json',
+      };
+      String body = json.encode({
+        'notification_token': notificationToken,
+      });
+      final response = await http.put(url, headers: headers, body: body);
+      final data = json.decode(response.body);
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        User userResponse = User.fromJson(data);
+        return Success(userResponse);
+      }
+      else {
+        print('ERROR ${listToString(data['message'])}');
+        return ErrorData(listToString(data['message']));
+      }
+    } catch (e) {
+      print('Error: $e');
+      return ErrorData(e.toString());
+    }
+  }
 
- Future<Resource<User>> updateImage(int id, User user, File file) async { 
+  Future<Resource<User>> updateImage(int id, User user, File file) async { 
     try {
       Uri url = Uri.http(ApiConfig.API_PROJECT, '/users/upload/$id');
       final request = http.MultipartRequest('PUT', url);
@@ -72,31 +96,4 @@ class UsersService {
     }
   }
 
-
-   Future<Resource<User>> updateNotificationToken(int id, String notificationToken) async {
-    try {
-      Uri url = Uri.http(ApiConfig.API_PROJECT, '/users/notification_token/$id');
-      Map<String, String> headers = {
-        'Content-Type': 'application/json',
-      };
-      String body = json.encode({
-        'notification_token': notificationToken,
-      });
-      final response = await http.put(url, headers: headers, body: body);
-      final data = json.decode(response.body);
-      if (response.statusCode == 200 || response.statusCode == 201) {
-        User userResponse = User.fromJson(data);
-        return Success(userResponse);
-      }
-      else {
-        print('ERROR ${listToString(data['message'])}');
-        return ErrorData(listToString(data['message']));
-      }
-    } catch (e) {
-      print('Error: $e');
-      return ErrorData(e.toString());
-    }
-  }
-
-  
 }

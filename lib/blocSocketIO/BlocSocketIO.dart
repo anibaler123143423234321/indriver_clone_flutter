@@ -4,7 +4,7 @@ import 'package:indriver_clone_flutter/blocSocketIO/BlocSocketIOEvent.dart';
 import 'package:indriver_clone_flutter/blocSocketIO/BlocSocketIOState.dart';
 import 'package:indriver_clone_flutter/main.dart';
 import 'package:indriver_clone_flutter/src/domain/models/AuthResponse.dart';
-import 'package:indriver_clone_flutter/src/domain/useCases/auth/AuthUseCase.dart';
+import 'package:indriver_clone_flutter/src/domain/useCases/auth/AuthUseCases.dart';
 import 'package:indriver_clone_flutter/src/domain/useCases/socket/SocketUseCases.dart';
 import 'package:socket_io_client/socket_io_client.dart';
 
@@ -28,17 +28,20 @@ class BlocSocketIO extends Bloc<BlocSocketIOEvent, BlocSocketIOState> {
         state.copyWith(socket: null)
       );
     });
-/*
-    on<ListenDriverAssignedSocketIO>((event, emit) async{
-      if (state.socket != null) {
-        AuthResponse authResponse = await authUseCases.getUserSession.run();
-        state.socket?.on('driver_assigned/${authResponse.user.id}', (data) {
-          print('DATA: $data');
-          navigatorKey.currentState?.pushNamed('driver/map/trip', arguments: data['id_client_request']);
-        });
-      }
-    });
-*/
+
+on<ListenDriverAssignedSocketIO>((event, emit) async{
+  if (state.socket != null) {
+    AuthResponse? authResponse = await authUseCases.getUserSession.run();
+    if (authResponse != null) { // Verificar si authResponse no es null
+      state.socket?.on('driver_assigned/${authResponse.user.id}', (data) {
+        print('DATA: $data');
+        navigatorKey.currentState?.pushNamed('driver/map/trip', arguments: data['id_client_request']);
+      });
+    }
+  }
+});
+
+
   }
 
 }

@@ -1,4 +1,5 @@
 import 'dart:convert';
+
 import 'package:indriver_clone_flutter/src/data/api/ApiConfig.dart';
 import 'package:http/http.dart' as http;
 import 'package:indriver_clone_flutter/src/domain/models/AuthResponse.dart';
@@ -7,7 +8,8 @@ import 'package:indriver_clone_flutter/src/domain/utils/ListToString.dart';
 import 'package:indriver_clone_flutter/src/domain/utils/Resource.dart';
 
 class AuthService {
-   Future<Resource<AuthResponse>> login(String email, String password) async {
+
+  Future<Resource<AuthResponse>> login(String email, String password) async {
     try {
       Uri url = Uri.http(ApiConfig.API_PROJECT, '/auth/login');
       Map<String, String> headers = { 'Content-Type': 'application/json' };

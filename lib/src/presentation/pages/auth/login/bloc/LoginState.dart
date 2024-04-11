@@ -3,13 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:indriver_clone_flutter/src/domain/utils/Resource.dart';
 import 'package:indriver_clone_flutter/src/presentation/utils/BlocFormItem.dart';
 
-
 class LoginState extends Equatable {
 
   final BlocFormItem email;
   final BlocFormItem password;
+  final Resource? response; 
   final GlobalKey<FormState>? formKey; 
-  final Resource? response;
 
   const LoginState({
     this.email = const BlocFormItem(error: 'Ingresa el email'),
@@ -22,8 +21,7 @@ class LoginState extends Equatable {
     BlocFormItem? email,
     BlocFormItem? password,
     Resource? response,
-    GlobalKey<FormState>? formKey
-
+    GlobalKey<FormState>? formKey,
   }) {
     return LoginState(
       email: email ?? this.email,

@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:indriver_clone_flutter/src/domain/models/DriverCarInfo.dart';
+
 ClientRequestResponse clientRequestResponseFromJson(String str) => ClientRequestResponse.fromJson(json.decode(str));
 
 String clientRequestResponseToJson(ClientRequestResponse data) => json.encode(data.toJson());
@@ -11,12 +13,17 @@ class ClientRequestResponse {
     String pickupDescription;
     String destinationDescription;
     DateTime updatedAt;
+    DateTime? createdAt;
     Position pickupPosition;
     Position destinationPosition;
     double? distance;
     String? timeDifference;
     Client client;
+    Client? driver;
     GoogleDistanceMatrix? googleDistanceMatrix;
+    int? idDriverAssigned;
+    double? fareAssigned;
+    DriverCarInfo? car;
 
     ClientRequestResponse({
         required this.id,
@@ -25,12 +32,17 @@ class ClientRequestResponse {
         required this.pickupDescription,
         required this.destinationDescription,
         required this.updatedAt,
+        this.createdAt,
         required this.pickupPosition,
         required this.destinationPosition,
         this.distance,
         this.timeDifference,
         required this.client,
         this.googleDistanceMatrix,
+        this.fareAssigned,
+        this.idDriverAssigned,
+        this.driver,
+        this.car
     });
 
     static List<ClientRequestResponse> fromJsonList(List<dynamic> jsonList) {
@@ -49,12 +61,17 @@ class ClientRequestResponse {
         pickupDescription: json["pickup_description"],
         destinationDescription: json["destination_description"],
         updatedAt: DateTime.parse(json["updated_at"]),
+        createdAt: json["created_at"] != null ? DateTime.parse(json["created_at"]) : null,
         pickupPosition: Position.fromJson(json["pickup_position"]),
         destinationPosition: Position.fromJson(json["destination_position"]),
         distance: json["distance"]?.toDouble(),
         timeDifference: json["time_difference"],
         client: Client.fromJson(json["client"]),
+        driver: json["driver"] != null ? Client.fromJson(json["driver"]) : null,
+        idDriverAssigned: json["id_driver_assigned"],
+        fareAssigned: json["fare_assigned"]?.toDouble(),
         googleDistanceMatrix: json["google_distance_matrix"] != null ? GoogleDistanceMatrix.fromJson(json["google_distance_matrix"]) : null,
+        car: json["car"] != null ? DriverCarInfo.fromJson(json["car"]) : null,
     );
 
     Map<String, dynamic> toJson() => {
@@ -70,6 +87,10 @@ class ClientRequestResponse {
         "time_difference": timeDifference,
         "client": client.toJson(),
         "google_distance_matrix": googleDistanceMatrix?.toJson(),
+        "id_driver_assigned": idDriverAssigned,
+        "fare_assigned": fareAssigned,
+        "driver": driver,
+        "car": car?.toJson()
     };
 }
 

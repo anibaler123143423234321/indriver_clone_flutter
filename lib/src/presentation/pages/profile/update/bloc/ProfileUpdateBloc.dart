@@ -1,11 +1,10 @@
-// profile_update_bloc.dart
 import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:indriver_clone_flutter/src/domain/models/AuthResponse.dart';
-import 'package:indriver_clone_flutter/src/domain/useCases/auth/AuthUseCase.dart';
+import 'package:indriver_clone_flutter/src/domain/useCases/auth/AuthUseCases.dart';
 import 'package:indriver_clone_flutter/src/domain/useCases/users/UsersUseCases.dart';
 import 'package:indriver_clone_flutter/src/domain/utils/Resource.dart';
 import 'package:indriver_clone_flutter/src/presentation/pages/profile/update/bloc/ProfileUpdateEvent.dart';
@@ -14,13 +13,12 @@ import 'package:indriver_clone_flutter/src/presentation/utils/BlocFormItem.dart'
 
 class ProfileUpdateBloc extends Bloc<ProfileUpdateEvent, ProfileUpdateState> {
 
-
   AuthUseCases authUseCases;
   UsersUseCases usersUseCases;
   final formKey = GlobalKey<FormState>();
 
-  ProfileUpdateBloc(this.usersUseCases  , this.authUseCases): super(ProfileUpdateState()) {
-    on<ProfileUpdateInitEvent>((event, emit){
+  ProfileUpdateBloc(this.usersUseCases, this.authUseCases): super(ProfileUpdateState()) {
+    on<ProfileUpdateInitEvent>((event, emit) {
       emit(
         state.copyWith(
           id: event.user?.id,
@@ -31,8 +29,6 @@ class ProfileUpdateBloc extends Bloc<ProfileUpdateEvent, ProfileUpdateState> {
         )
       );
     });
-  
-
     on<NameChanged>((event, emit) {
       emit(
         state.copyWith(
@@ -55,7 +51,6 @@ class ProfileUpdateBloc extends Bloc<ProfileUpdateEvent, ProfileUpdateState> {
         )
       );
     });
-
     on<PhoneChanged>((event, emit) {
       emit(
         state.copyWith(
@@ -67,8 +62,6 @@ class ProfileUpdateBloc extends Bloc<ProfileUpdateEvent, ProfileUpdateState> {
         )
       );
     });
-
-
     on<PickImage>((event, emit) async {
       final ImagePicker picker = ImagePicker();
       final XFile? image = await picker.pickImage(source: ImageSource.gallery);
@@ -93,8 +86,6 @@ class ProfileUpdateBloc extends Bloc<ProfileUpdateEvent, ProfileUpdateState> {
         );
       }
     });
-
-
     on<UpdateUserSession>((event, emit) async {
       AuthResponse authResponse = await authUseCases.getUserSession.run();
       authResponse.user.name = event.user.name;
@@ -103,9 +94,7 @@ class ProfileUpdateBloc extends Bloc<ProfileUpdateEvent, ProfileUpdateState> {
       authResponse.user.image = event.user.image;
       await authUseCases.saveUserSession.run(authResponse);
     });
-
-    
-       on<FormSubmit>((event, emit) async {
+    on<FormSubmit>((event, emit) async {
       print('Name: ${state.name.value}');
       print('LastName: ${state.lastname.value}');
       print('Phone: ${state.phone.value}');
@@ -126,4 +115,3 @@ class ProfileUpdateBloc extends Bloc<ProfileUpdateEvent, ProfileUpdateState> {
   }
 
 }
-

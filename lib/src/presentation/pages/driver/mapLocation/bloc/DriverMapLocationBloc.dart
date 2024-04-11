@@ -5,7 +5,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:indriver_clone_flutter/blocSocketIO/BlocSocketIO.dart';
 import 'package:indriver_clone_flutter/src/domain/models/AuthResponse.dart';
 import 'package:indriver_clone_flutter/src/domain/models/DriverPosition.dart';
-import 'package:indriver_clone_flutter/src/domain/useCases/auth/AuthUseCase.dart';
+import 'package:indriver_clone_flutter/src/domain/useCases/auth/AuthUseCases.dart';
 import 'package:indriver_clone_flutter/src/domain/useCases/drivers-position/DriversPositionUseCases.dart';
 import 'package:indriver_clone_flutter/src/domain/useCases/geolocator/GeolocatorUseCases.dart';
 import 'package:indriver_clone_flutter/src/domain/useCases/socket/SocketUseCases.dart';
@@ -13,21 +13,20 @@ import 'package:indriver_clone_flutter/src/presentation/pages/driver/mapLocation
 import 'package:indriver_clone_flutter/src/presentation/pages/driver/mapLocation/bloc/DriverMapLocationState.dart';
 import 'package:socket_io_client/socket_io_client.dart';
 
-class DriverMapLocationBloc
-    extends Bloc<DriverMapLocationEvent, DriverMapLocationState> {
+
+class DriverMapLocationBloc extends Bloc<DriverMapLocationEvent, DriverMapLocationState> {
+
   SocketUseCases socketUseCases;
   GeolocatorUseCases geolocatorUseCases;
   AuthUseCases authUseCases;
   DriversPositionUseCases driversPositionUseCases;
   StreamSubscription? positionSubscription;
   BlocSocketIO blocSocketIO;
-
-  DriverMapLocationBloc(this.blocSocketIO,this.geolocatorUseCases, this.socketUseCases, this.authUseCases, this.driversPositionUseCases)
-      : super(DriverMapLocationState()) {
-      
+  
+  DriverMapLocationBloc(this.blocSocketIO, this.geolocatorUseCases, this.socketUseCases, this.authUseCases, this.driversPositionUseCases): super(DriverMapLocationState()) {
+    
     on<DriverMapLocationInitEvent>((event, emit) async {
-      Completer<GoogleMapController> controller =
-          Completer<GoogleMapController>();
+      Completer<GoogleMapController> controller = Completer<GoogleMapController>();
       AuthResponse authResponse = await authUseCases.getUserSession.run();
       emit(
         state.copyWith(
@@ -36,7 +35,7 @@ class DriverMapLocationBloc
         )
       );
     });
-
+    
     on<FindPosition>((event, emit) async {
       Position position = await geolocatorUseCases.findPosition.run();
       add(ChangeMapCameraPosition(lat: position.latitude, lng: position.longitude));
@@ -44,14 +43,13 @@ class DriverMapLocationBloc
       Stream<Position> positionStream = geolocatorUseCases.getPositionStream.run();
       positionSubscription = positionStream.listen((Position position) {
         add(UpdateLocation(position: position));
-        
-        add(SaveLocationData(driverPosition: DriverPosition(
-          idDriver: state.idDriver!,
-          lat: position.latitude,
-          lng: position.longitude
+        add(SaveLocationData(
+          driverPosition: DriverPosition(
+            idDriver: state.idDriver!, 
+            lat: position.latitude, 
+            lng: position.longitude)
           )
-          )
-          );
+        );
       });
       emit(
         state.copyWith(
@@ -98,28 +96,24 @@ class DriverMapLocationBloc
     on<UpdateLocation>((event, emit) async {
       add(AddMyPositionMarker(lat: event.position.latitude, lng: event.position.longitude));
       add(ChangeMapCameraPosition(lat: event.position.latitude, lng: event.position.longitude));
-            print('Updating location - Latitude: ${event.position.latitude}, Longitude: ${event.position.longitude}');
       emit(
         state.copyWith(
           position: event.position
-          
         )
       );
-      add(EmitDriverPositionSocketIo());
+      add(EmitDriverPositionSocketIO());
     });
 
     on<StopLocation>((event, emit) {
       positionSubscription?.cancel();
-      add(DeleteLocationData(idDriver: state.idDriver!));
+       add(DeleteLocationData(idDriver: state.idDriver!));
     });
 
-  
-
-    on<EmitDriverPositionSocketIo>((event, emit) async {
+    on<EmitDriverPositionSocketIO>((event, emit) async {
       blocSocketIO.state.socket?.emit('change_driver_position', {
         'id': state.idDriver,
         'lat': state.position!.latitude,
-        'lng': state.position!.longitude
+        'lng': state.position!.longitude,
       });
     });
 
@@ -132,4 +126,6 @@ class DriverMapLocationBloc
     });
 
   }
+
+
 }

@@ -5,7 +5,7 @@ import 'package:indriver_clone_flutter/src/domain/models/ClientRequest.dart';
 import 'package:indriver_clone_flutter/src/domain/models/ClientRequestResponse.dart';
 import 'package:indriver_clone_flutter/src/domain/models/DriverPosition.dart';
 import 'package:indriver_clone_flutter/src/domain/models/DriverTripRequest.dart';
-import 'package:indriver_clone_flutter/src/domain/useCases/auth/AuthUseCase.dart';
+import 'package:indriver_clone_flutter/src/domain/useCases/auth/AuthUseCases.dart';
 import 'package:indriver_clone_flutter/src/domain/useCases/client-requests/ClientRequestsUseCases.dart';
 import 'package:indriver_clone_flutter/src/domain/useCases/driver-trip-request/DriverTripRequestUseCases.dart';
 import 'package:indriver_clone_flutter/src/domain/useCases/drivers-position/DriversPositionUseCases.dart';

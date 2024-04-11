@@ -7,6 +7,7 @@ import 'package:indriver_clone_flutter/src/presentation/pages/driver/clientReque
 import 'package:indriver_clone_flutter/src/presentation/pages/driver/clientRequests/bloc/DriverClientRequestsEvent.dart';
 import 'package:indriver_clone_flutter/src/presentation/pages/driver/clientRequests/bloc/DriverClientRequestsState.dart';
 import 'package:indriver_clone_flutter/src/presentation/utils/BlocFormItem.dart';
+import 'package:indriver_clone_flutter/src/presentation/utils/GalleryOrPhotoDialog.dart';
 import 'package:indriver_clone_flutter/src/presentation/widgets/DefaultTextField.dart';
 
 class DriverClientRequestsItem extends StatelessWidget {

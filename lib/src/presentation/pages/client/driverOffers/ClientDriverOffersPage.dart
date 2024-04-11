@@ -7,37 +7,47 @@ import 'package:indriver_clone_flutter/src/presentation/pages/client/driverOffer
 import 'package:indriver_clone_flutter/src/presentation/pages/client/driverOffers/bloc/ClientDriverOffersBloc.dart';
 import 'package:indriver_clone_flutter/src/presentation/pages/client/driverOffers/bloc/ClientDriverOffersEvent.dart';
 import 'package:indriver_clone_flutter/src/presentation/pages/client/driverOffers/bloc/ClientDriverOffersState.dart';
+import 'package:lottie/lottie.dart';
 
 class ClientDriverOffersPage extends StatefulWidget {
-  const ClientDriverOffersPage({Key? key}) : super(key: key);
+  const ClientDriverOffersPage({super.key});
 
   @override
   State<ClientDriverOffersPage> createState() => _ClientDriverOffersPageState();
 }
 
 class _ClientDriverOffersPageState extends State<ClientDriverOffersPage> {
+
+  int? idClientRequest;
+
   @override
   void initState() {
+    // TODO: implement initState
     super.initState();
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
-      context.read<ClientDriverOffersBloc>().add(GetDriverOffers(idClientRequest: 7));
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      if (idClientRequest != null) {
+        context.read<ClientDriverOffersBloc>().add(ListenNewDriverOfferSocketIO(idClientRequest: idClientRequest!));
+      }      
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    idClientRequest = ModalRoute.of(context)?.settings.arguments as int;
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Driver Offers'),
-      ),
-      body: BlocConsumer<ClientDriverOffersBloc, ClientDriverOffersState>(
+      body: BlocListener<ClientDriverOffersBloc, ClientDriverOffersState>(
         listener: (context, state) {
           final response = state.responseDriverOffers;
+          final responseAssignDriver = state.responseAssignDriver;
           if (response is ErrorData) {
             Fluttertoast.showToast(msg: response.message, toastLength: Toast.LENGTH_LONG);
           }
+          if (responseAssignDriver is Success) {
+            Navigator.pushNamed(context, 'client/map/trip', arguments: idClientRequest);
+          }
         },
-        builder: (context, state) {
+        child: BlocBuilder<ClientDriverOffersBloc, ClientDriverOffersState>(
+            builder: (context, state) {
           final response = state.responseDriverOffers;
 
           if (response is Loading) {
@@ -48,6 +58,19 @@ class _ClientDriverOffersPageState extends State<ClientDriverOffersPage> {
             return ListView.builder(
                 itemCount: driverTripRequest.length,
                 itemBuilder: (context, index) {
+                  if (driverTripRequest.length == 0) {
+                    return Column(
+                      children: [
+                        Text('Esperando conductores...'),
+                        Lottie.asset(
+                          'assets/lottie/waiting_car.json',
+                          width: 200,
+                          height: 200,
+                          fit: BoxFit.fill,
+                        )
+                      ],
+                    );
+                  }
                   return ClientDriverOffersItem(driverTripRequest[index]);
                 });
           }
@@ -62,11 +85,17 @@ class _ClientDriverOffersPageState extends State<ClientDriverOffersPage> {
                     fontSize: 20,
                     fontWeight: FontWeight.bold
                   ),
+                ),
+                Lottie.asset(
+                  'assets/lottie/waiting_car.json',
+                  width: 400,
+                  height: 230,
+                  // fit: BoxFit.fill,
                 )
               ],
             ),
           );
-        }
+        }),
       ),
     );
   }

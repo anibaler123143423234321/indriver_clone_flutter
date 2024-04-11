@@ -50,7 +50,7 @@ class ClientRequestsService {
       }
       
     } catch (e) {
-      print('Error upcli: $e');
+      print('Error: $e');
       return ErrorData(e.toString());
     }
   }
@@ -73,7 +73,7 @@ class ClientRequestsService {
       }
       
     } catch (e) {
-      print('Error updri: $e');
+      print('Error: $e');
       return ErrorData(e.toString());
     }
   }
@@ -121,7 +121,7 @@ class ClientRequestsService {
       }
       
     } catch (e) {
-      print('Error updateDriverAssigned: $e');
+      print('Error: $e');
       return ErrorData(e.toString());
     }
 
@@ -148,36 +148,33 @@ class ClientRequestsService {
       }
       
     } catch (e) {
-      print('Error getTimeAndDistanceClientRequets: $e');
+      print('Error: $e');
       return ErrorData(e.toString());
     }
 
   }
 
- Future<Resource<List<ClientRequestResponse>>> getNearbyTripRequest(double driverLat, double driverLng) async {
+  Future<Resource<List<ClientRequestResponse>>> getNearbyTripRequest(double driverLat, double driverLng) async {
 
-  try {
-    Uri url = Uri.http(ApiConfig.API_PROJECT, '/client-requests/${driverLat}/${driverLng}');
-    Map<String, String> headers = { 'Content-Type': 'application/json' };
-    final response = await http.get(url, headers: headers);
-    final data = json.decode(response.body);
-    print('Request to server: GET $url'); // Agregar esta línea para imprimir la solicitud al servidor
-    print('Response from server: $data'); // Agrega esta línea para imprimir la respuesta del servidor
-    if (response.statusCode == 200 || response.statusCode == 201) {
-      List<ClientRequestResponse> clientRequests = ClientRequestResponse.fromJsonList(data);
-      return Success(clientRequests);
+    try {
+      Uri url = Uri.http(ApiConfig.API_PROJECT, '/client-requests/${driverLat}/${driverLng}');
+      Map<String, String> headers = { 'Content-Type': 'application/json' };
+      final response = await http.get(url, headers: headers);
+      final data = json.decode(response.body);
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        List<ClientRequestResponse> clientRequests = ClientRequestResponse.fromJsonList(data);
+        return Success(clientRequests);
+      }
+      else {
+        return ErrorData(listToString(data['message']));
+      }
+      
+    } catch (e) {
+      print('Error: $e');
+      return ErrorData(e.toString());
     }
-    else {
-      return ErrorData(listToString(data['message']));
-    }
-    
-  } catch (e) {
-    print('Error getnear: $e');
-    return ErrorData(e.toString());
+
   }
-
-}
-
 
   Future<Resource<List<ClientRequestResponse>>> getByDriverAssigned(int idDriver) async {
     try {
@@ -194,7 +191,7 @@ class ClientRequestsService {
       }
       
     } catch (e) {
-      print('Error getByDriverAssigned: $e');
+      print('Error: $e');
       return ErrorData(e.toString());
     }
   }
@@ -214,7 +211,7 @@ class ClientRequestsService {
       }
       
     } catch (e) {
-      print('ErrorgetByClientAssigned: $e');
+      print('Error: $e');
       return ErrorData(e.toString());
     }
   }
@@ -235,7 +232,7 @@ class ClientRequestsService {
       }
       
     } catch (e) {
-      print('Error getByClientRequest: $e');
+      print('Error: $e');
       return ErrorData(e.toString());
     }
 

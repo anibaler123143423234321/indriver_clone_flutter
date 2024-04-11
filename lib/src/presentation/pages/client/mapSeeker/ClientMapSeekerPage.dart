@@ -81,7 +81,7 @@ class _ClientMapSeekerPageState extends State<ClientMapSeekerPage> {
                 child: DefaultButton(
                   margin: EdgeInsets.only(bottom: 30, left: 60, right: 60),
                   text: 'REVISAR VIAJE', 
-                  //iconData: Icons.check_circle,
+                  iconData: Icons.check_circle,
                   // textColor: Colors.white,
                   onPressed: () {
                     Navigator.pushNamed(

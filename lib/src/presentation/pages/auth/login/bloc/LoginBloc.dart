@@ -2,7 +2,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:indriver_clone_flutter/src/domain/models/AuthResponse.dart';
-import 'package:indriver_clone_flutter/src/domain/useCases/auth/AuthUseCase.dart';
+import 'package:indriver_clone_flutter/src/domain/useCases/auth/AuthUseCases.dart';
 import 'package:indriver_clone_flutter/src/domain/useCases/users/UsersUseCases.dart';
 import 'package:indriver_clone_flutter/src/domain/utils/Resource.dart';
 import 'package:indriver_clone_flutter/src/presentation/pages/auth/login/bloc/LoginEvent.dart';

@@ -7,6 +7,7 @@ import 'package:indriver_clone_flutter/src/domain/models/PlacemarkData.dart';
 import 'package:indriver_clone_flutter/src/domain/repository/GeolocatorRepository.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 
+
 class GeolocatorRepositoryImpl implements GeolocatorRepository {
   @override
   Future<Position> findPosition() async {
@@ -26,36 +27,35 @@ class GeolocatorRepositoryImpl implements GeolocatorRepository {
         return Future.error('Location permissions are denied');
       }
     }
-
+    
     if (permission == LocationPermission.deniedForever) {
       print('Permiso no otorgado por el usuario permanentemente');
       return Future.error(
-          'Location permissions are permanently denied, we cannot request permissions.');
-    }
+        'Location permissions are permanently denied, we cannot request permissions.');
+    } 
     return await Geolocator.getCurrentPosition();
   }
 
   @override
   Future<BitmapDescriptor> createMarkerFromAsset(String path) async {
     ImageConfiguration configuration = ImageConfiguration();
-    BitmapDescriptor descriptor =
-        await BitmapDescriptor.fromAssetImage(configuration, path);
+    BitmapDescriptor descriptor = await BitmapDescriptor.fromAssetImage(configuration, path);
     return descriptor;
   }
 
   @override
-  Marker getMarker(String markerId, double lat, double lng, String title,
-      String content, BitmapDescriptor imageMarker) {
+  Marker getMarker(String markerId, double lat, double lng, String title, String content, BitmapDescriptor imageMarker) {
     MarkerId id = MarkerId(markerId);
     Marker marker = Marker(
-        markerId: id,
-        icon: imageMarker,
-        position: LatLng(lat, lng),
-        infoWindow: InfoWindow(title: title, snippet: content));
+      markerId: id,
+      icon: imageMarker,
+      position: LatLng(lat,lng),
+      infoWindow: InfoWindow(title: title, snippet: content)
+    );
     return marker;
   }
 
-   @override
+  @override
   Future<PlacemarkData?> getPlacemarkData(CameraPosition cameraPosition) async {
     try {
       double lat = cameraPosition.target.latitude;
@@ -80,30 +80,31 @@ class GeolocatorRepositoryImpl implements GeolocatorRepository {
       return null;
     }
   }
-
-@override
-Future<List<LatLng>> getPolyline(
-    LatLng pickUpLatLng, LatLng destinationLatLng) async {
-  PolylineResult result = await PolylinePoints().getRouteBetweenCoordinates(
-      API_KEY_GOOGLE,
-      PointLatLng(pickUpLatLng.latitude, pickUpLatLng.longitude),
-      PointLatLng(destinationLatLng.latitude, destinationLatLng.longitude),
-      travelMode: TravelMode.driving,
-      wayPoints: []); // No proporcionar puntos intermedios
-  List<LatLng> polylineCoordinates = [];
-  if (result.points.isNotEmpty) {
-    result.points.forEach((PointLatLng point) {
-      polylineCoordinates.add(LatLng(point.latitude, point.longitude));
-    });
+  
+  @override
+  Future<List<LatLng>> getPolyline(LatLng pickUpLatLng, LatLng destinationLatLng) async {
+    PolylineResult result = await PolylinePoints().getRouteBetweenCoordinates(
+        API_KEY_GOOGLE,
+        PointLatLng(pickUpLatLng.latitude, pickUpLatLng.longitude),
+        PointLatLng(destinationLatLng.latitude, destinationLatLng.longitude),
+        travelMode: TravelMode.driving,
+        wayPoints: []);
+    List<LatLng> polylineCoordinates = [];
+    if (result.points.isNotEmpty) {
+      result.points.forEach((PointLatLng point) {
+        polylineCoordinates.add(LatLng(point.latitude, point.longitude));
+      });
+    }
+    return polylineCoordinates;
   }
-  return polylineCoordinates;
-}
-
-
+  
   @override
   Stream<Position> getPositionStream() {
-    LocationSettings locationSettings =
-        LocationSettings(accuracy: LocationAccuracy.best, distanceFilter: 1);
+    LocationSettings locationSettings = LocationSettings(
+      accuracy: LocationAccuracy.best,
+      distanceFilter: 1
+    );
     return Geolocator.getPositionStream(locationSettings: locationSettings);
   }
+
 }

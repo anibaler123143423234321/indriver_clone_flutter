@@ -4,10 +4,5 @@ import 'package:indriver_clone_flutter/src/domain/repository/GeolocatorRepositor
 class GetMarkerUseCase {
   GeolocatorRepository geolocatorRepository;
   GetMarkerUseCase(this.geolocatorRepository);
-  run(
-    String markerId, 
-    double lat, double lng, 
-    String title, 
-    String content, 
-    BitmapDescriptor imageMarker) => geolocatorRepository.getMarker(markerId, lat, lng, title, content, imageMarker);
+  run(String markerId, double lat, double lng, String title, String content, BitmapDescriptor imageMarker) => geolocatorRepository.getMarker(markerId, lat, lng, title, content, imageMarker);
 }

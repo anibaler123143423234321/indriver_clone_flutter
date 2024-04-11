@@ -6,7 +6,7 @@ import 'package:indriver_clone_flutter/blocSocketIO/BlocSocketIO.dart';
 import 'package:indriver_clone_flutter/src/domain/models/AuthResponse.dart';
 import 'package:indriver_clone_flutter/src/domain/models/ClientRequest.dart';
 import 'package:indriver_clone_flutter/src/domain/models/TimeAndDistanceValues.dart';
-import 'package:indriver_clone_flutter/src/domain/useCases/auth/AuthUseCase.dart';
+import 'package:indriver_clone_flutter/src/domain/useCases/auth/AuthUseCases.dart';
 import 'package:indriver_clone_flutter/src/domain/useCases/client-requests/ClientRequestsUseCases.dart';
 import 'package:indriver_clone_flutter/src/domain/useCases/geolocator/GeolocatorUseCases.dart';
 import 'package:indriver_clone_flutter/src/domain/utils/Resource.dart';
@@ -68,7 +68,7 @@ class ClientMapBookingInfoBloc extends Bloc<ClientMapBookingInfoEvent, ClientMap
       await googleMapController.animateCamera(CameraUpdate.newCameraPosition(
         CameraPosition(
           target: LatLng(event.lat, event.lng),
-          zoom: 12,
+          zoom: 16,
           bearing: 0
         )
       ));

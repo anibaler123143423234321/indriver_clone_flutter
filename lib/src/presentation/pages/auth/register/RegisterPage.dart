@@ -22,13 +22,13 @@ class _RegisterPageState extends State<RegisterPage> {
       body: BlocListener<RegisterBloc, RegisterState>(
         listener: (context, state) {
           final response = state.response;
-          if(response  is ErrorData){
+          if (response is ErrorData) {
             Fluttertoast.showToast(msg: response.message, toastLength: Toast.LENGTH_LONG);
           }
-          else if(response  is Success){
+          else if (response is Success) {
             final authResponse = response.data as AuthResponse;
             context.read<RegisterBloc>().add(FormReset());
-            context.read<RegisterBloc>().add(SaveUserSession(authResponse: response.data));
+            context.read<RegisterBloc>().add(SaveUserSession(authResponse: authResponse));
             Navigator.pushNamedAndRemoveUntil(context, 'client/home', (route) => false);
           }
         },

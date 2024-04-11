@@ -6,7 +6,7 @@ import 'package:indriver_clone_flutter/src/domain/repository/AuthRepository.dart
 import 'package:indriver_clone_flutter/src/domain/utils/Resource.dart';
 
 class AuthRepositoryImpl implements AuthRepository {
-
+  
   AuthService authService;
   SharefPref sharefPref;
 
@@ -25,7 +25,7 @@ class AuthRepositoryImpl implements AuthRepository {
   @override
   Future<AuthResponse?> getUserSession() async {
     final data = await sharefPref.read('user');
-    if(data !=null){
+    if (data != null) {
       AuthResponse authResponse = AuthResponse.fromJson(data);
       return authResponse;
     }

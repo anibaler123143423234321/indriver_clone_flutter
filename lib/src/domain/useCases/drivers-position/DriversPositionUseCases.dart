@@ -3,6 +3,7 @@ import 'package:indriver_clone_flutter/src/domain/useCases/drivers-position/Dele
 import 'package:indriver_clone_flutter/src/domain/useCases/drivers-position/GetDriverPositionUseCase.dart';
 
 class DriversPositionUseCases {
+
   CreateDriverPositionUseCase createDriverPosition;
   DeleteDriverPositionUseCase deleteDriverPosition;
   GetDriverPositionUseCase getDriverPosition;
@@ -12,4 +13,5 @@ class DriversPositionUseCases {
     required this.deleteDriverPosition,
     required this.getDriverPosition,
   });
+
 }

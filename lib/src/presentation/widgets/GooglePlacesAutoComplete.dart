@@ -28,9 +28,7 @@ class GooglePlacesAutoComplete extends StatelessWidget {
         debounceTime: 400,
         countries: ["pe"],
         isLatLngRequired: true,
-        getPlaceDetailWithLatLng: (Prediction prediction) => {
-          onPlaceSelected(prediction)
-        },
+        getPlaceDetailWithLatLng: onPlaceSelected,
         itemClick: (Prediction prediction) {
           controller.text = prediction.description ?? "";
           controller.selection = TextSelection.fromPosition(

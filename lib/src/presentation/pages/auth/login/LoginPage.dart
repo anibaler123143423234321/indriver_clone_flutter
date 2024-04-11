@@ -39,7 +39,7 @@ class _LoginPageState extends State<LoginPage> {
             context.read<LoginBloc>().add(SaveUserSession(authResponse: authResponse));
             context.read<LoginBloc>().add(UpdateNotificationToken(id: authResponse.user.id!));
             context.read<BlocSocketIO>().add(ConnectSocketIO());
-            //context.read<BlocSocketIO>().add(ListenDriverAssignedSocketIO());
+            context.read<BlocSocketIO>().add(ListenDriverAssignedSocketIO());
             if (authResponse.user.roles!.length > 1) {
               Navigator.pushNamedAndRemoveUntil(context, 'roles', (route) => false);
             }

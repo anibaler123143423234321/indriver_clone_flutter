@@ -17,11 +17,10 @@ class ClientMapSeekerState extends Equatable {
   final String pickUpDescription;
   final String destinationDescription;
 
-
   ClientMapSeekerState({
     this.position,
     this.controller,
-    this.cameraPosition = const CameraPosition(target: LatLng(4.7449125, -74.1113708), zoom: 14.0),
+    this.cameraPosition = const CameraPosition(target: LatLng(-6.638993, -79.788382), zoom: 16.0),
     this.placemarkData,
     this.pickUpLatLng,
     this.destinationLatLng,

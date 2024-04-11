@@ -1,4 +1,3 @@
-
 import 'package:indriver_clone_flutter/src/domain/useCases/auth/GetUserSessionUseCase.dart';
 import 'package:indriver_clone_flutter/src/domain/useCases/auth/LoginUseCase.dart';
 import 'package:indriver_clone_flutter/src/domain/useCases/auth/LogoutUseCase.dart';
@@ -19,7 +18,6 @@ class AuthUseCases {
     required this.saveUserSession,
     required this.getUserSession,
     required this.logout,
-
   });
 
 }

@@ -3,7 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:indriver_clone_flutter/blocSocketIO/BlocSocketIO.dart';
 import 'package:indriver_clone_flutter/blocSocketIO/BlocSocketIOEvent.dart';
 import 'package:indriver_clone_flutter/main.dart';
+import 'package:indriver_clone_flutter/src/presentation/pages/client/mapSeeker/ClientMapSeekerPage.dart';
+import 'package:indriver_clone_flutter/src/presentation/pages/driver/carInfo/DriverCarInfoPage.dart';
 import 'package:indriver_clone_flutter/src/presentation/pages/driver/clientRequests/DriverClientRequestsPage.dart';
+import 'package:indriver_clone_flutter/src/presentation/pages/driver/historyTrip/DriverHistoryTripPage.dart';
 import 'package:indriver_clone_flutter/src/presentation/pages/driver/home/bloc/DriverHomeBloc.dart';
 import 'package:indriver_clone_flutter/src/presentation/pages/driver/home/bloc/DriverHomeState.dart';
 import 'package:indriver_clone_flutter/src/presentation/pages/driver/home/bloc/DriverHomeEvent.dart';
@@ -12,16 +15,18 @@ import 'package:indriver_clone_flutter/src/presentation/pages/profile/info/Profi
 import 'package:indriver_clone_flutter/src/presentation/pages/roles/RolesPage.dart';
 
 class DriverHomePage extends StatefulWidget {
-  const DriverHomePage({Key? key}) : super(key: key);
+  const DriverHomePage({super.key});
 
   @override
   State<DriverHomePage> createState() => _DriverHomePageState();
 }
 
 class _DriverHomePageState extends State<DriverHomePage> {
-  final List<Widget> pageList = [
+  List<Widget> pageList = <Widget>[
     DriverMapLocationPage(),
     DriverClientRequestsPage(),
+    DriverCarInfoPage(),
+    DriverHistoryTripPage(),
     ProfileInfoPage(),
     RolesPage(),
   ];
@@ -30,13 +35,25 @@ class _DriverHomePageState extends State<DriverHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Menu de opciones'),
+        title: Text(
+          'Menu de opciones',
+        ),
+        // flexibleSpace: Container(
+        //   decoration: BoxDecoration(
+        //     gradient: LinearGradient(
+        //       begin: Alignment.topRight,
+        //       end: Alignment.bottomLeft,
+        //       colors: [
+        //         Color.fromARGB(255, 12, 38, 145),
+        //         Color.fromARGB(255, 34, 156, 249),
+        //       ]
+        //     ),
+        //   )
+        // ),
       ),
       body: BlocBuilder<DriverHomeBloc, DriverHomeState>(
         builder: (context, state) {
-          // Asegurarse de que pageIndex esté en el rango correcto
-          final int pageIndex = state.pageIndex.clamp(0, pageList.length - 1);
-          return pageList[pageIndex];
+          return pageList[state.pageIndex];
         },
       ),
       drawer: BlocBuilder<DriverHomeBloc, DriverHomeState>(
@@ -45,32 +62,32 @@ class _DriverHomePageState extends State<DriverHomePage> {
             child: ListView(
               padding: EdgeInsets.zero,
               children: [
-                const DrawerHeader(
+                DrawerHeader(
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
-                        begin: Alignment.topRight,
-                        end: Alignment.bottomLeft,
-                        colors: [
-                          Color.fromARGB(255, 12, 38, 145),
-                          Color.fromARGB(255, 34, 156, 249),
-                        ]),
+                      begin: Alignment.topRight,
+                      end: Alignment.bottomLeft,
+                      colors: [
+                        Color.fromARGB(255, 12, 38, 145),
+                        Color.fromARGB(255, 34, 156, 249),
+                      ]
+                    ),
                   ),
                   child: Text(
                     'Menu del Conductor',
                     style: TextStyle(color: Colors.white),
-                  ),
+                  )
                 ),
                 ListTile(
-                  title: const Text('Mapa de localizacion'),
+                  title: Text('Mapa de localizacion'),
                   selected: state.pageIndex == 0,
                   onTap: () {
                     context.read<DriverHomeBloc>().add(ChangeDrawerPage(pageIndex: 0));
                     Navigator.pop(context);
                   },
                 ),
-                
                 ListTile(
-                  title: const Text('Solicitudes de Viaje'),
+                  title: Text('Solicitudes de viaje'),
                   selected: state.pageIndex == 1,
                   onTap: () {
                     context.read<DriverHomeBloc>().add(ChangeDrawerPage(pageIndex: 1));
@@ -78,7 +95,7 @@ class _DriverHomePageState extends State<DriverHomePage> {
                   },
                 ),
                 ListTile(
-                  title: const Text('Perfil del usuario'),
+                  title: Text('Mi Vehiculo'),
                   selected: state.pageIndex == 2,
                   onTap: () {
                     context.read<DriverHomeBloc>().add(ChangeDrawerPage(pageIndex: 2));
@@ -86,15 +103,37 @@ class _DriverHomePageState extends State<DriverHomePage> {
                   },
                 ),
                 ListTile(
-                  title: const Text('Roles de usuario'),
+                  title: Text('Historial de viajes'),
                   selected: state.pageIndex == 3,
                   onTap: () {
-                    context.read<DriverHomeBloc>().add(ChangeDrawerPage(pageIndex: 3));
+                    context
+                        .read<DriverHomeBloc>()
+                        .add(ChangeDrawerPage(pageIndex: 3));
                     Navigator.pop(context);
                   },
                 ),
                 ListTile(
-                  title: const Text('Cerrar sesion'),
+                  title: Text('Perfil del usuario'),
+                  selected: state.pageIndex == 4,
+                  onTap: () {
+                    context
+                        .read<DriverHomeBloc>()
+                        .add(ChangeDrawerPage(pageIndex: 4));
+                    Navigator.pop(context);
+                  },
+                ),
+                ListTile(
+                  title: Text('Roles de usuario'),
+                  selected: state.pageIndex == 5,
+                  onTap: () {
+                    context
+                        .read<DriverHomeBloc>()
+                        .add(ChangeDrawerPage(pageIndex: 5));
+                    Navigator.pop(context);
+                  },
+                ),
+                ListTile(
+                  title: Text('Cerrar sesion'),
                   onTap: () {
                     context.read<DriverHomeBloc>().add(Logout());
                     context.read<BlocSocketIO>().add(DisconnectSocketIO());

@@ -8,14 +8,12 @@ class ClientMapBookingInfoInitEvent extends ClientMapBookingInfoEvent {
   final LatLng destinationLatLng;
   final String pickUpDescription;
   final String destinationDescription;
-
   ClientMapBookingInfoInitEvent({
     required this.pickUpLatLng,
     required this.destinationLatLng,
     required this.pickUpDescription,
     required this.destinationDescription,
   });
-  
 }
 
 class FareOfferedChanged extends ClientMapBookingInfoEvent {

@@ -83,4 +83,3 @@ class _ClientMapBookingInfoPageState extends State<ClientMapBookingInfoPage> {
     );
   }
 }
-  

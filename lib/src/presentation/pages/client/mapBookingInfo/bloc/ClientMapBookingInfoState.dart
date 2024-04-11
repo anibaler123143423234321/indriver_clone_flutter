@@ -27,7 +27,7 @@ class ClientMapBookingInfoState extends Equatable {
   ClientMapBookingInfoState({
     this.position,
     this.controller,
-    this.cameraPosition = const CameraPosition(target: LatLng(4.7449125, -74.1113708), zoom: 18.0),
+    this.cameraPosition = const CameraPosition(target: LatLng(-6.638993, -79.788382), zoom: 16.0),
     this.pickUpLatLng,
     this.destinationLatLng,
     this.pickUpDescription = '',
@@ -71,6 +71,6 @@ class ClientMapBookingInfoState extends Equatable {
 
 
   @override
-  List<Object?> get props => [position, markers, polylines, controller, cameraPosition, pickUpLatLng, destinationLatLng, pickUpDescription, destinationDescription, responseTimeAndDistance, responseClientRequest,fareOffered];
+  List<Object?> get props => [position, markers, polylines, controller, cameraPosition, pickUpLatLng, destinationLatLng, pickUpDescription, destinationDescription, responseTimeAndDistance, responseClientRequest, fareOffered];
 
 }

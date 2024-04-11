@@ -45,7 +45,7 @@ dependencies:
   image_picker: ^1.0.7
   path: ^1.8.3
   http_parser: ^4.0.2
-  google_maps_flutter: ^2.5.3
+  google_maps_flutter: ^2.6.0
   geolocator: ^11.0.0
   google_places_flutter: ^2.0.8
   geocoding: ^3.0.0
@@ -57,6 +57,7 @@ dependencies:
   modal_bottom_sheet: ^3.0.0
   lottie: ^3.1.0
   toggle_switch: ^2.3.0
+  flutter_rating_bar: ^4.0.1
   
 dev_dependencies:
   flutter_test:
@@ -83,6 +84,7 @@ flutter:
   uses-material-design: true
   assets:
     - assets/img/
+    - assets/lottie/
   # To add assets to your application, add an assets section, like this:
   # assets:
   #   - images/a_dot_burr.jpeg

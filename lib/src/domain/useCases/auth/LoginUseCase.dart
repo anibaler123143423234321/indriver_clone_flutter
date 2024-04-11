@@ -2,7 +2,7 @@ import 'package:indriver_clone_flutter/src/domain/repository/AuthRepository.dart
 
 class LoginUseCase {
   
-  AuthRepository repository; 
+  AuthRepository repository;
 
   LoginUseCase(this.repository);
 

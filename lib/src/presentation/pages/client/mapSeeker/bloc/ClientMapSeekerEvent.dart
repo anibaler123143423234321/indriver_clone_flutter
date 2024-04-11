@@ -37,14 +37,13 @@ class OnAutoCompletedDestinationSelected extends ClientMapSeekerEvent {
 
 class ListenDriversPositionSocketIO extends ClientMapSeekerEvent {}
 class ListenDriversDisconnectedSocketIO extends ClientMapSeekerEvent {}
-
-class RemoteDriverPositionMarker extends ClientMapSeekerEvent{
+class RemoveDriverPositionMarker extends ClientMapSeekerEvent {
   final String idSocket;
 
-  RemoteDriverPositionMarker({required this.idSocket});
+  RemoveDriverPositionMarker({ required this.idSocket });
 }
+class AddDriverPositionMarker extends ClientMapSeekerEvent {
 
-class AddDriverPositionMarker extends ClientMapSeekerEvent{
   final String idSocket;
   final int id;
   final double lat;
@@ -56,4 +55,5 @@ class AddDriverPositionMarker extends ClientMapSeekerEvent{
     required this.lat,
     required this.lng,
   });
+
 }
